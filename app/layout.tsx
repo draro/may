@@ -3,6 +3,8 @@ import { Inter, Playfair_Display } from "next/font/google";
 import "./globals.css";
 import Navigation from "@/components/layout/Navigation";
 import Providers from "@/components/layout/Providers";
+import clientPromise from "@/lib/db/mongodb";
+import { SiteConfig } from "@/models/SiteConfig";
 
 const inter = Inter({
   variable: "--font-inter",
@@ -16,27 +18,58 @@ const playfair = Playfair_Display({
   display: "swap",
 });
 
-export const metadata: Metadata = {
-  title: "NYC Professional Photographer | Architecture, Interiors & Travel Photography",
-  description: "Award-winning NYC-based photographer specializing in architectural photography, interior design, and travel documentation. Available for commercial and editorial projects.",
-  keywords: ["photographer", "NYC photographer", "architecture photography", "interior photography", "travel photography", "commercial photographer", "New York"],
-  authors: [{ name: "Professional Photographer NYC" }],
-  openGraph: {
-    title: "NYC Professional Photographer Portfolio",
-    description: "Explore stunning architecture, interior, and travel photography by a professional NYC-based photographer.",
-    type: "website",
-    locale: "en_US",
-  },
-  twitter: {
-    card: "summary_large_image",
-    title: "NYC Professional Photographer Portfolio",
-    description: "Architecture, Interior & Travel Photography",
-  },
-  robots: {
-    index: true,
-    follow: true,
-  },
-};
+async function getSiteConfig(): Promise<SiteConfig | null> {
+  try {
+    const client = await clientPromise;
+    const db = client.db('portfolio');
+    const config = await db.collection<SiteConfig>('siteConfig').findOne({});
+    return config;
+  } catch (error) {
+    console.error('Error fetching site config for metadata:', error);
+    return null;
+  }
+}
+
+export async function generateMetadata(): Promise<Metadata> {
+  const config = await getSiteConfig();
+
+  if (!config) {
+    // Default fallback metadata
+    return {
+      title: "NYC Professional Photographer | Architecture, Interiors & Travel Photography",
+      description: "Award-winning NYC-based photographer specializing in architectural photography, interior design, and travel documentation.",
+      keywords: ["photographer", "NYC photographer", "architecture photography", "interior photography", "travel photography"],
+      robots: {
+        index: true,
+        follow: true,
+      },
+    };
+  }
+
+  return {
+    title: config.seo.title,
+    description: config.seo.description,
+    keywords: config.seo.keywords,
+    authors: [{ name: "Professional Photographer NYC" }],
+    openGraph: {
+      title: config.seo.title,
+      description: config.seo.description,
+      type: "website",
+      locale: "en_US",
+    },
+    twitter: {
+      card: "summary_large_image",
+      title: config.seo.title,
+      description: config.seo.description,
+    },
+    robots: {
+      index: true,
+      follow: true,
+    },
+  };
+}
+
+export const metadata = await generateMetadata();
 
 export default function RootLayout({
   children,

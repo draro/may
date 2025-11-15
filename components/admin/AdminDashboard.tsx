@@ -6,13 +6,14 @@ import { useRouter } from 'next/navigation';
 import Link from 'next/link';
 import { Category, Image as ImageType } from '@/types';
 import ImageUpload from './ImageUpload';
+import SiteSettings from './SiteSettings';
 
 export default function AdminDashboard() {
   const { data: session, status } = useSession();
   const router = useRouter();
   const [categories, setCategories] = useState<Category[]>([]);
   const [images, setImages] = useState<ImageType[]>([]);
-  const [activeTab, setActiveTab] = useState<'overview' | 'categories' | 'images' | 'upload'>('overview');
+  const [activeTab, setActiveTab] = useState<'overview' | 'categories' | 'images' | 'upload' | 'settings'>('overview');
   const [newCategory, setNewCategory] = useState({ name: '', slug: '', description: '' });
   const [loading, setLoading] = useState(false);
 
@@ -187,6 +188,16 @@ export default function AdminDashboard() {
           >
             Images
           </button>
+          <button
+            onClick={() => setActiveTab('settings')}
+            className={`px-4 py-2 -mb-px ${
+              activeTab === 'settings'
+                ? 'border-b-2 border-gray-900 font-medium'
+                : 'text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white'
+            }`}
+          >
+            Settings
+          </button>
         </div>
 
         {/* Overview Tab */}
@@ -348,6 +359,11 @@ export default function AdminDashboard() {
               </div>
             </div>
           </div>
+        )}
+
+        {/* Settings Tab */}
+        {activeTab === 'settings' && (
+          <SiteSettings />
         )}
       </div>
     </div>
