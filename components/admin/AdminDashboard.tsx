@@ -5,13 +5,14 @@ import { useSession, signOut } from 'next-auth/react';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
 import { Category, Image as ImageType } from '@/types';
+import ImageUpload from './ImageUpload';
 
 export default function AdminDashboard() {
   const { data: session, status } = useSession();
   const router = useRouter();
   const [categories, setCategories] = useState<Category[]>([]);
   const [images, setImages] = useState<ImageType[]>([]);
-  const [activeTab, setActiveTab] = useState<'overview' | 'categories' | 'images'>('overview');
+  const [activeTab, setActiveTab] = useState<'overview' | 'categories' | 'images' | 'upload'>('overview');
   const [newCategory, setNewCategory] = useState({ name: '', slug: '', description: '' });
   const [loading, setLoading] = useState(false);
 
@@ -151,17 +152,27 @@ export default function AdminDashboard() {
             className={`px-4 py-2 -mb-px ${
               activeTab === 'overview'
                 ? 'border-b-2 border-gray-900 font-medium'
-                : 'text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:text-white'
+                : 'text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white'
             }`}
           >
             Overview
+          </button>
+          <button
+            onClick={() => setActiveTab('upload')}
+            className={`px-4 py-2 -mb-px ${
+              activeTab === 'upload'
+                ? 'border-b-2 border-gray-900 font-medium'
+                : 'text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white'
+            }`}
+          >
+            Upload
           </button>
           <button
             onClick={() => setActiveTab('categories')}
             className={`px-4 py-2 -mb-px ${
               activeTab === 'categories'
                 ? 'border-b-2 border-gray-900 font-medium'
-                : 'text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:text-white'
+                : 'text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white'
             }`}
           >
             Categories
@@ -171,7 +182,7 @@ export default function AdminDashboard() {
             className={`px-4 py-2 -mb-px ${
               activeTab === 'images'
                 ? 'border-b-2 border-gray-900 font-medium'
-                : 'text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:text-white'
+                : 'text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white'
             }`}
           >
             Images
@@ -277,6 +288,13 @@ export default function AdminDashboard() {
                 )}
               </div>
             </div>
+          </div>
+        )}
+
+        {/* Upload Tab */}
+        {activeTab === 'upload' && (
+          <div>
+            <ImageUpload categories={categories} onUploadSuccess={fetchData} />
           </div>
         )}
 
