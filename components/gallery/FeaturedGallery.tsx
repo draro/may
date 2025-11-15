@@ -29,13 +29,13 @@ export default function FeaturedGallery() {
 
   if (loading) {
     return (
-      <section className="py-24 px-4 sm:px-6 lg:px-8 bg-white">
+      <section className="py-24 px-4 sm:px-6 lg:px-8 bg-white dark:bg-gray-900">
         <div className="max-w-7xl mx-auto">
           <div className="text-center mb-16">
             <h2 className="text-4xl font-bold mb-4" style={{ fontFamily: 'var(--font-playfair)' }}>
               Featured Work
             </h2>
-            <p className="text-gray-600">Loading...</p>
+            <p className="text-gray-600 dark:text-gray-400">Loading...</p>
           </div>
         </div>
       </section>
@@ -44,13 +44,13 @@ export default function FeaturedGallery() {
 
   if (images.length === 0) {
     return (
-      <section className="py-24 px-4 sm:px-6 lg:px-8 bg-white">
+      <section className="py-24 px-4 sm:px-6 lg:px-8 bg-white dark:bg-gray-900">
         <div className="max-w-7xl mx-auto">
           <div className="text-center mb-16">
             <h2 className="text-4xl font-bold mb-4" style={{ fontFamily: 'var(--font-playfair)' }}>
               Featured Work
             </h2>
-            <p className="text-gray-600">
+            <p className="text-gray-600 dark:text-gray-400">
               Curated selection of recent projects. Gallery coming soon.
             </p>
           </div>
@@ -60,13 +60,13 @@ export default function FeaturedGallery() {
   }
 
   return (
-    <section className="py-24 px-4 sm:px-6 lg:px-8 bg-white">
+    <section className="py-24 px-4 sm:px-6 lg:px-8 bg-white dark:bg-gray-900">
       <div className="max-w-7xl mx-auto">
         <div className="text-center mb-16">
           <h2 className="text-4xl font-bold mb-4" style={{ fontFamily: 'var(--font-playfair)' }}>
             Featured Work
           </h2>
-          <p className="text-gray-600">
+          <p className="text-gray-600 dark:text-gray-400">
             Curated selection of recent projects
           </p>
         </div>
@@ -80,7 +80,7 @@ export default function FeaturedGallery() {
         <div className="text-center mt-16">
           <Link
             href="/gallery"
-            className="inline-block px-8 py-4 border-2 border-gray-900 text-gray-900 rounded-none hover:bg-gray-900 hover:text-white transition-colors uppercase text-sm tracking-wider font-medium"
+            className="inline-block px-8 py-4 border-2 border-gray-900 text-gray-900 dark:text-white rounded-none hover:bg-gray-900 hover:text-white transition-colors uppercase text-sm tracking-wider font-medium"
           >
             View Full Gallery
           </Link>

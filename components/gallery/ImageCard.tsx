@@ -46,11 +46,11 @@ export default function ImageCard({ image }: ImageCardProps) {
           }`}
         >
           <div className="bg-white/95 backdrop-blur-sm p-4 transform transition-transform duration-500">
-            <h3 className="text-lg font-semibold text-gray-900 mb-1">
+            <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-1">
               {image.title}
             </h3>
             {image.description && (
-              <p className="text-sm text-gray-600 line-clamp-2">
+              <p className="text-sm text-gray-600 dark:text-gray-400 line-clamp-2">
                 {image.description}
               </p>
             )}

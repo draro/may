@@ -70,7 +70,7 @@ export default function GalleryClient() {
           <h1 className="text-5xl font-bold mb-4" style={{ fontFamily: 'var(--font-playfair)' }}>
             Gallery
           </h1>
-          <p className="text-xl text-gray-600">
+          <p className="text-xl text-gray-600 dark:text-gray-400">
             Explore our curated collection of photography
           </p>
         </motion.div>
@@ -88,7 +88,7 @@ export default function GalleryClient() {
               className={`px-6 py-2 text-sm uppercase tracking-wider transition-all ${
                 selectedCategory === 'all'
                   ? 'bg-gray-900 text-white'
-                  : 'border border-gray-300 text-gray-700 hover:border-gray-900'
+                  : 'border border-gray-300 dark:border-gray-600 text-gray-700 dark:text-gray-300 hover:border-gray-900'
               }`}
             >
               All
@@ -100,7 +100,7 @@ export default function GalleryClient() {
                 className={`px-6 py-2 text-sm uppercase tracking-wider transition-all ${
                   selectedCategory === category.slug
                     ? 'bg-gray-900 text-white'
-                    : 'border border-gray-300 text-gray-700 hover:border-gray-900'
+                    : 'border border-gray-300 dark:border-gray-600 text-gray-700 dark:text-gray-300 hover:border-gray-900'
                 }`}
               >
                 {category.name}
@@ -112,7 +112,7 @@ export default function GalleryClient() {
         {/* Images Grid */}
         {filteredImages.length === 0 ? (
           <div className="text-center py-16">
-            <p className="text-gray-600">
+            <p className="text-gray-600 dark:text-gray-400">
               {selectedCategory === 'all'
                 ? 'No images yet. Check back soon!'
                 : 'No images in this category yet.'}

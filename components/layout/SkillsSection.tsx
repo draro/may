@@ -44,7 +44,7 @@ export default function SkillsSection() {
   const interests = profile?.interests || defaultInterests;
 
   return (
-    <section className="py-24 px-4 sm:px-6 lg:px-8 bg-gray-50">
+    <section className="py-24 px-4 sm:px-6 lg:px-8 bg-gray-50 dark:bg-gray-800">
       <div className="max-w-7xl mx-auto">
         <div className="grid md:grid-cols-2 gap-16">
           {/* Skills */}
@@ -68,7 +68,7 @@ export default function SkillsSection() {
                   className="flex items-center gap-3 group"
                 >
                   <div className="w-2 h-2 bg-gray-900 group-hover:w-8 transition-all duration-300" />
-                  <span className="text-gray-700 group-hover:text-gray-900 transition-colors">
+                  <span className="text-gray-700 dark:text-gray-300 group-hover:text-gray-900 dark:text-white transition-colors">
                     {skill}
                   </span>
                 </motion.div>
@@ -94,7 +94,7 @@ export default function SkillsSection() {
                   whileInView={{ opacity: 1, scale: 1 }}
                   viewport={{ once: true }}
                   transition={{ duration: 0.3, delay: index * 0.1 }}
-                  className="px-4 py-2 border border-gray-300 hover:border-gray-900 hover:bg-gray-900 hover:text-white transition-all duration-300 text-sm uppercase tracking-wider cursor-default"
+                  className="px-4 py-2 border border-gray-300 dark:border-gray-600 hover:border-gray-900 hover:bg-gray-900 hover:text-white transition-all duration-300 text-sm uppercase tracking-wider cursor-default"
                 >
                   {interest}
                 </motion.span>

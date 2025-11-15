@@ -23,13 +23,13 @@ export default function CTASection() {
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
             <Link
               href="/contact"
-              className="px-8 py-4 bg-white text-gray-900 rounded-none hover:bg-gray-100 transition-colors uppercase text-sm tracking-wider font-medium"
+              className="px-8 py-4 bg-white dark:bg-gray-900 text-gray-900 dark:text-white rounded-none hover:bg-gray-100 transition-colors uppercase text-sm tracking-wider font-medium"
             >
               Start a Project
             </Link>
             <Link
               href="/gallery"
-              className="px-8 py-4 border-2 border-white text-white rounded-none hover:bg-white hover:text-gray-900 transition-colors uppercase text-sm tracking-wider font-medium"
+              className="px-8 py-4 border-2 border-white text-white rounded-none hover:bg-white dark:bg-gray-900 hover:text-gray-900 dark:text-white transition-colors uppercase text-sm tracking-wider font-medium"
             >
               View More Work
             </Link>

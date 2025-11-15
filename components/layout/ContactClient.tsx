@@ -72,7 +72,7 @@ export default function ContactClient() {
           <h1 className="text-5xl font-bold mb-6" style={{ fontFamily: 'var(--font-playfair)' }}>
             Get in Touch
           </h1>
-          <p className="text-xl text-gray-600">
+          <p className="text-xl text-gray-600 dark:text-gray-400">
             Have a project in mind? Let's discuss how we can work together.
           </p>
         </motion.div>
@@ -90,42 +90,42 @@ export default function ContactClient() {
 
             <div className="space-y-6 mb-8">
               <div className="flex items-start gap-4">
-                <svg className="w-6 h-6 text-gray-600 mt-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <svg className="w-6 h-6 text-gray-600 dark:text-gray-400 mt-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
                 </svg>
                 <div>
                   <h3 className="font-semibold mb-1">Location</h3>
-                  <p className="text-gray-600">New York, NY</p>
+                  <p className="text-gray-600 dark:text-gray-400">New York, NY</p>
                 </div>
               </div>
 
               <div className="flex items-start gap-4">
-                <svg className="w-6 h-6 text-gray-600 mt-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <svg className="w-6 h-6 text-gray-600 dark:text-gray-400 mt-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
                 </svg>
                 <div>
                   <h3 className="font-semibold mb-1">Email</h3>
-                  <a href="mailto:contact@photographer.com" className="text-gray-600 hover:text-gray-900">
+                  <a href="mailto:contact@photographer.com" className="text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:text-white">
                     contact@photographer.com
                   </a>
                 </div>
               </div>
 
               <div className="flex items-start gap-4">
-                <svg className="w-6 h-6 text-gray-600 mt-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <svg className="w-6 h-6 text-gray-600 dark:text-gray-400 mt-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
                 </svg>
                 <div>
                   <h3 className="font-semibold mb-1">Response Time</h3>
-                  <p className="text-gray-600">Within 24-48 hours</p>
+                  <p className="text-gray-600 dark:text-gray-400">Within 24-48 hours</p>
                 </div>
               </div>
             </div>
 
-            <div className="bg-gray-50 p-6">
+            <div className="bg-gray-50 dark:bg-gray-800 p-6">
               <h3 className="font-semibold mb-3">Available for:</h3>
-              <ul className="space-y-2 text-gray-700">
+              <ul className="space-y-2 text-gray-700 dark:text-gray-300">
                 <li className="flex items-center gap-2">
                   <div className="w-1.5 h-1.5 bg-gray-900" />
                   <span>Commercial Photography</span>
@@ -168,7 +168,7 @@ export default function ContactClient() {
                   value={formData.name}
                   onChange={handleChange}
                   required
-                  className="w-full px-4 py-3 border border-gray-300 focus:border-gray-900 focus:outline-none transition-colors"
+                  className="w-full px-4 py-3 border border-gray-300 dark:border-gray-600 focus:border-gray-900 focus:outline-none transition-colors"
                   placeholder="Your name"
                 />
               </div>
@@ -184,7 +184,7 @@ export default function ContactClient() {
                   value={formData.email}
                   onChange={handleChange}
                   required
-                  className="w-full px-4 py-3 border border-gray-300 focus:border-gray-900 focus:outline-none transition-colors"
+                  className="w-full px-4 py-3 border border-gray-300 dark:border-gray-600 focus:border-gray-900 focus:outline-none transition-colors"
                   placeholder="your.email@example.com"
                 />
               </div>
@@ -198,7 +198,7 @@ export default function ContactClient() {
                   name="projectType"
                   value={formData.projectType}
                   onChange={handleChange}
-                  className="w-full px-4 py-3 border border-gray-300 focus:border-gray-900 focus:outline-none transition-colors"
+                  className="w-full px-4 py-3 border border-gray-300 dark:border-gray-600 focus:border-gray-900 focus:outline-none transition-colors"
                 >
                   <option value="">Select a project type</option>
                   <option value="architecture">Architecture</option>
@@ -221,7 +221,7 @@ export default function ContactClient() {
                   value={formData.subject}
                   onChange={handleChange}
                   required
-                  className="w-full px-4 py-3 border border-gray-300 focus:border-gray-900 focus:outline-none transition-colors"
+                  className="w-full px-4 py-3 border border-gray-300 dark:border-gray-600 focus:border-gray-900 focus:outline-none transition-colors"
                   placeholder="Brief subject of your inquiry"
                 />
               </div>
@@ -237,7 +237,7 @@ export default function ContactClient() {
                   onChange={handleChange}
                   required
                   rows={6}
-                  className="w-full px-4 py-3 border border-gray-300 focus:border-gray-900 focus:outline-none transition-colors resize-none"
+                  className="w-full px-4 py-3 border border-gray-300 dark:border-gray-600 focus:border-gray-900 focus:outline-none transition-colors resize-none"
                   placeholder="Tell me about your project..."
                 />
               </div>
