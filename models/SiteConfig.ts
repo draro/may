@@ -58,5 +58,25 @@ export interface SiteConfig {
     tagline: string;
   };
 
+  // Theme & Styling
+  theme: {
+    fonts: {
+      headingFont: string; // Google Font name
+      bodyFont: string; // Google Font name
+    };
+    lightMode: {
+      primaryColor: string;
+      backgroundColor: string;
+      textColor: string;
+      accentColor: string;
+    };
+    darkMode: {
+      primaryColor: string;
+      backgroundColor: string;
+      textColor: string;
+      accentColor: string;
+    };
+  };
+
   updatedAt: Date;
 }

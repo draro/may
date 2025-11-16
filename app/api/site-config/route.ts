@@ -56,6 +56,24 @@ export async function GET() {
           copyrightText: '© 2024 Professional Photographer. All rights reserved.',
           tagline: 'Capturing moments that matter',
         },
+        theme: {
+          fonts: {
+            headingFont: 'Playfair Display',
+            bodyFont: 'Inter',
+          },
+          lightMode: {
+            primaryColor: '#111827', // gray-900
+            backgroundColor: '#ffffff',
+            textColor: '#111827',
+            accentColor: '#6b7280', // gray-500
+          },
+          darkMode: {
+            primaryColor: '#ffffff',
+            backgroundColor: '#111827', // gray-900
+            textColor: '#f9fafb', // gray-50
+            accentColor: '#9ca3af', // gray-400
+          },
+        },
         updatedAt: new Date(),
       };
 

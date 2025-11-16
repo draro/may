@@ -8,7 +8,7 @@ export default function SiteSettings() {
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
   const [message, setMessage] = useState({ type: '', text: '' });
-  const [activeSection, setActiveSection] = useState<'seo' | 'hero' | 'stats' | 'about' | 'contact' | 'footer'>('seo');
+  const [activeSection, setActiveSection] = useState<'seo' | 'hero' | 'stats' | 'about' | 'contact' | 'footer' | 'theme'>('seo');
 
   useEffect(() => {
     fetchConfig();
@@ -69,6 +69,7 @@ export default function SiteSettings() {
     { id: 'about', label: 'About' },
     { id: 'contact', label: 'Contact' },
     { id: 'footer', label: 'Footer' },
+    { id: 'theme', label: 'Theme & Colors' },
   ] as const;
 
   return (
@@ -418,6 +419,198 @@ export default function SiteSettings() {
                   onChange={(e) => setConfig({ ...config, footer: { ...config.footer, tagline: e.target.value } })}
                   className="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-800 focus:border-gray-900 dark:focus:border-white focus:outline-none"
                 />
+              </div>
+            </div>
+          )}
+
+          {/* Theme Section */}
+          {activeSection === 'theme' && (
+            <div className="space-y-6">
+              <h3 className="text-lg font-semibold">Theme & Styling</h3>
+
+              {/* Fonts */}
+              <div className="bg-gray-50 dark:bg-gray-800 p-4 rounded">
+                <h4 className="text-md font-semibold mb-4">Fonts</h4>
+                <div className="grid md:grid-cols-2 gap-4">
+                  <div>
+                    <label className="block text-sm font-medium mb-2">Heading Font (Google Fonts)</label>
+                    <input
+                      type="text"
+                      value={config.theme.fonts.headingFont}
+                      onChange={(e) => setConfig({ ...config, theme: { ...config.theme, fonts: { ...config.theme.fonts, headingFont: e.target.value } } })}
+                      className="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-800 focus:border-gray-900 dark:focus:border-white focus:outline-none"
+                      placeholder="e.g., Playfair Display"
+                    />
+                  </div>
+                  <div>
+                    <label className="block text-sm font-medium mb-2">Body Font (Google Fonts)</label>
+                    <input
+                      type="text"
+                      value={config.theme.fonts.bodyFont}
+                      onChange={(e) => setConfig({ ...config, theme: { ...config.theme, fonts: { ...config.theme.fonts, bodyFont: e.target.value } } })}
+                      className="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-800 focus:border-gray-900 dark:focus:border-white focus:outline-none"
+                      placeholder="e.g., Inter"
+                    />
+                  </div>
+                </div>
+              </div>
+
+              {/* Light Mode Colors */}
+              <div className="bg-gray-50 dark:bg-gray-800 p-4 rounded">
+                <h4 className="text-md font-semibold mb-4">Light Mode Colors</h4>
+                <div className="grid md:grid-cols-2 gap-4">
+                  <div>
+                    <label className="block text-sm font-medium mb-2">Primary Color</label>
+                    <div className="flex gap-2">
+                      <input
+                        type="color"
+                        value={config.theme.lightMode.primaryColor}
+                        onChange={(e) => setConfig({ ...config, theme: { ...config.theme, lightMode: { ...config.theme.lightMode, primaryColor: e.target.value } } })}
+                        className="w-16 h-10 border border-gray-300 dark:border-gray-600 rounded cursor-pointer"
+                      />
+                      <input
+                        type="text"
+                        value={config.theme.lightMode.primaryColor}
+                        onChange={(e) => setConfig({ ...config, theme: { ...config.theme, lightMode: { ...config.theme.lightMode, primaryColor: e.target.value } } })}
+                        className="flex-1 px-4 py-2 border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-800 focus:border-gray-900 dark:focus:border-white focus:outline-none"
+                        placeholder="#111827"
+                      />
+                    </div>
+                  </div>
+                  <div>
+                    <label className="block text-sm font-medium mb-2">Background Color</label>
+                    <div className="flex gap-2">
+                      <input
+                        type="color"
+                        value={config.theme.lightMode.backgroundColor}
+                        onChange={(e) => setConfig({ ...config, theme: { ...config.theme, lightMode: { ...config.theme.lightMode, backgroundColor: e.target.value } } })}
+                        className="w-16 h-10 border border-gray-300 dark:border-gray-600 rounded cursor-pointer"
+                      />
+                      <input
+                        type="text"
+                        value={config.theme.lightMode.backgroundColor}
+                        onChange={(e) => setConfig({ ...config, theme: { ...config.theme, lightMode: { ...config.theme.lightMode, backgroundColor: e.target.value } } })}
+                        className="flex-1 px-4 py-2 border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-800 focus:border-gray-900 dark:focus:border-white focus:outline-none"
+                        placeholder="#ffffff"
+                      />
+                    </div>
+                  </div>
+                  <div>
+                    <label className="block text-sm font-medium mb-2">Text Color</label>
+                    <div className="flex gap-2">
+                      <input
+                        type="color"
+                        value={config.theme.lightMode.textColor}
+                        onChange={(e) => setConfig({ ...config, theme: { ...config.theme, lightMode: { ...config.theme.lightMode, textColor: e.target.value } } })}
+                        className="w-16 h-10 border border-gray-300 dark:border-gray-600 rounded cursor-pointer"
+                      />
+                      <input
+                        type="text"
+                        value={config.theme.lightMode.textColor}
+                        onChange={(e) => setConfig({ ...config, theme: { ...config.theme, lightMode: { ...config.theme.lightMode, textColor: e.target.value } } })}
+                        className="flex-1 px-4 py-2 border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-800 focus:border-gray-900 dark:focus:border-white focus:outline-none"
+                        placeholder="#111827"
+                      />
+                    </div>
+                  </div>
+                  <div>
+                    <label className="block text-sm font-medium mb-2">Accent Color</label>
+                    <div className="flex gap-2">
+                      <input
+                        type="color"
+                        value={config.theme.lightMode.accentColor}
+                        onChange={(e) => setConfig({ ...config, theme: { ...config.theme, lightMode: { ...config.theme.lightMode, accentColor: e.target.value } } })}
+                        className="w-16 h-10 border border-gray-300 dark:border-gray-600 rounded cursor-pointer"
+                      />
+                      <input
+                        type="text"
+                        value={config.theme.lightMode.accentColor}
+                        onChange={(e) => setConfig({ ...config, theme: { ...config.theme, lightMode: { ...config.theme.lightMode, accentColor: e.target.value } } })}
+                        className="flex-1 px-4 py-2 border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-800 focus:border-gray-900 dark:focus:border-white focus:outline-none"
+                        placeholder="#6b7280"
+                      />
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              {/* Dark Mode Colors */}
+              <div className="bg-gray-50 dark:bg-gray-800 p-4 rounded">
+                <h4 className="text-md font-semibold mb-4">Dark Mode Colors</h4>
+                <div className="grid md:grid-cols-2 gap-4">
+                  <div>
+                    <label className="block text-sm font-medium mb-2">Primary Color</label>
+                    <div className="flex gap-2">
+                      <input
+                        type="color"
+                        value={config.theme.darkMode.primaryColor}
+                        onChange={(e) => setConfig({ ...config, theme: { ...config.theme, darkMode: { ...config.theme.darkMode, primaryColor: e.target.value } } })}
+                        className="w-16 h-10 border border-gray-300 dark:border-gray-600 rounded cursor-pointer"
+                      />
+                      <input
+                        type="text"
+                        value={config.theme.darkMode.primaryColor}
+                        onChange={(e) => setConfig({ ...config, theme: { ...config.theme, darkMode: { ...config.theme.darkMode, primaryColor: e.target.value } } })}
+                        className="flex-1 px-4 py-2 border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-800 focus:border-gray-900 dark:focus:border-white focus:outline-none"
+                        placeholder="#ffffff"
+                      />
+                    </div>
+                  </div>
+                  <div>
+                    <label className="block text-sm font-medium mb-2">Background Color</label>
+                    <div className="flex gap-2">
+                      <input
+                        type="color"
+                        value={config.theme.darkMode.backgroundColor}
+                        onChange={(e) => setConfig({ ...config, theme: { ...config.theme, darkMode: { ...config.theme.darkMode, backgroundColor: e.target.value } } })}
+                        className="w-16 h-10 border border-gray-300 dark:border-gray-600 rounded cursor-pointer"
+                      />
+                      <input
+                        type="text"
+                        value={config.theme.darkMode.backgroundColor}
+                        onChange={(e) => setConfig({ ...config, theme: { ...config.theme, darkMode: { ...config.theme.darkMode, backgroundColor: e.target.value } } })}
+                        className="flex-1 px-4 py-2 border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-800 focus:border-gray-900 dark:focus:border-white focus:outline-none"
+                        placeholder="#111827"
+                      />
+                    </div>
+                  </div>
+                  <div>
+                    <label className="block text-sm font-medium mb-2">Text Color</label>
+                    <div className="flex gap-2">
+                      <input
+                        type="color"
+                        value={config.theme.darkMode.textColor}
+                        onChange={(e) => setConfig({ ...config, theme: { ...config.theme, darkMode: { ...config.theme.darkMode, textColor: e.target.value } } })}
+                        className="w-16 h-10 border border-gray-300 dark:border-gray-600 rounded cursor-pointer"
+                      />
+                      <input
+                        type="text"
+                        value={config.theme.darkMode.textColor}
+                        onChange={(e) => setConfig({ ...config, theme: { ...config.theme, darkMode: { ...config.theme.darkMode, textColor: e.target.value } } })}
+                        className="flex-1 px-4 py-2 border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-800 focus:border-gray-900 dark:focus:border-white focus:outline-none"
+                        placeholder="#f9fafb"
+                      />
+                    </div>
+                  </div>
+                  <div>
+                    <label className="block text-sm font-medium mb-2">Accent Color</label>
+                    <div className="flex gap-2">
+                      <input
+                        type="color"
+                        value={config.theme.darkMode.accentColor}
+                        onChange={(e) => setConfig({ ...config, theme: { ...config.theme, darkMode: { ...config.theme.darkMode, accentColor: e.target.value } } })}
+                        className="w-16 h-10 border border-gray-300 dark:border-gray-600 rounded cursor-pointer"
+                      />
+                      <input
+                        type="text"
+                        value={config.theme.darkMode.accentColor}
+                        onChange={(e) => setConfig({ ...config, theme: { ...config.theme, darkMode: { ...config.theme.darkMode, accentColor: e.target.value } } })}
+                        className="flex-1 px-4 py-2 border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-800 focus:border-gray-900 dark:focus:border-white focus:outline-none"
+                        placeholder="#9ca3af"
+                      />
+                    </div>
+                  </div>
+                </div>
               </div>
             </div>
           )}
