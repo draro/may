@@ -22,6 +22,10 @@ export default function Lightbox({
   onPrevious,
 }: LightboxProps) {
   const currentImage = images[currentIndex];
+  const previousIndex = (currentIndex - 1 + images.length) % images.length;
+  const nextIndex = (currentIndex + 1) % images.length;
+  const previousImage = images[previousIndex];
+  const nextImage = images[nextIndex];
 
   // Keyboard navigation
   const handleKeyDown = useCallback(
@@ -100,7 +104,7 @@ export default function Lightbox({
           </div>
 
           {/* Main content */}
-          <div className="flex items-center justify-center h-full p-4 md:p-8">
+          <div className="flex items-center justify-center h-full p-4 md:p-8 pb-32">
             <div className="relative w-full h-full flex items-center justify-center">
               {/* Previous button */}
               {images.length > 1 && (
@@ -138,11 +142,11 @@ export default function Lightbox({
                 className="flex flex-col items-center justify-center max-w-full max-h-full"
                 onClick={(e) => e.stopPropagation()}
               >
-                <div className="relative max-w-full max-h-[80vh] flex items-center justify-center">
+                <div className="relative max-w-full max-h-[65vh] flex items-center justify-center">
                   <img
                     src={currentImage.firebaseUrl}
                     alt={currentImage.title}
-                    className="max-w-full max-h-[80vh] w-auto h-auto object-contain"
+                    className="max-w-full max-h-[65vh] w-auto h-auto object-contain"
                   />
                 </div>
 
@@ -192,13 +196,101 @@ export default function Lightbox({
             </div>
           </div>
 
+          {/* Thumbnail navigation */}
+          {images.length > 1 && (
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.3, delay: 0.2 }}
+              className="absolute bottom-20 left-1/2 transform -translate-x-1/2 z-50"
+              onClick={(e) => e.stopPropagation()}
+            >
+              <div className="flex items-center gap-4 px-4">
+                {/* Previous thumbnail */}
+                {previousImage && (
+                  <button
+                    onClick={onPrevious}
+                    className="group relative overflow-hidden transition-all hover:scale-105"
+                    aria-label="Previous image"
+                  >
+                    <div className="w-20 h-16 md:w-24 md:h-20 relative">
+                      <img
+                        src={previousImage.firebaseUrl}
+                        alt={previousImage.title}
+                        className="w-full h-full object-cover opacity-50 group-hover:opacity-100 transition-opacity"
+                      />
+                      <div className="absolute inset-0 border-2 border-white/30 group-hover:border-white/60 transition-colors" />
+                      <div className="absolute inset-0 flex items-center justify-center">
+                        <svg
+                          className="w-6 h-6 text-white opacity-70"
+                          fill="none"
+                          stroke="currentColor"
+                          viewBox="0 0 24 24"
+                        >
+                          <path
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
+                            strokeWidth={2}
+                            d="M15 19l-7-7 7-7"
+                          />
+                        </svg>
+                      </div>
+                    </div>
+                    <p className="text-white text-xs mt-1 text-center opacity-70 group-hover:opacity-100 transition-opacity truncate max-w-[80px] md:max-w-[96px]">
+                      {previousImage.title}
+                    </p>
+                  </button>
+                )}
+
+                {/* Current indicator */}
+                <div className="w-1 h-16 md:h-20 bg-white/50 rounded-full" />
+
+                {/* Next thumbnail */}
+                {nextImage && (
+                  <button
+                    onClick={onNext}
+                    className="group relative overflow-hidden transition-all hover:scale-105"
+                    aria-label="Next image"
+                  >
+                    <div className="w-20 h-16 md:w-24 md:h-20 relative">
+                      <img
+                        src={nextImage.firebaseUrl}
+                        alt={nextImage.title}
+                        className="w-full h-full object-cover opacity-50 group-hover:opacity-100 transition-opacity"
+                      />
+                      <div className="absolute inset-0 border-2 border-white/30 group-hover:border-white/60 transition-colors" />
+                      <div className="absolute inset-0 flex items-center justify-center">
+                        <svg
+                          className="w-6 h-6 text-white opacity-70"
+                          fill="none"
+                          stroke="currentColor"
+                          viewBox="0 0 24 24"
+                        >
+                          <path
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
+                            strokeWidth={2}
+                            d="M9 5l7 7-7 7"
+                          />
+                        </svg>
+                      </div>
+                    </div>
+                    <p className="text-white text-xs mt-1 text-center opacity-70 group-hover:opacity-100 transition-opacity truncate max-w-[80px] md:max-w-[96px]">
+                      {nextImage.title}
+                    </p>
+                  </button>
+                )}
+              </div>
+            </motion.div>
+          )}
+
           {/* Navigation hint */}
           <div className="absolute bottom-4 left-1/2 transform -translate-x-1/2 text-white text-xs text-center">
             <p className="hidden md:block">
               Use arrow keys to navigate • ESC to close
             </p>
             <p className="md:hidden">
-              Swipe to navigate • Tap outside to close
+              Tap thumbnails or swipe • Tap outside to close
             </p>
           </div>
         </motion.div>
