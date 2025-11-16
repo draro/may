@@ -22,6 +22,7 @@ export async function POST(request: NextRequest) {
       );
     }
 
+    // Save to database
     const contact = await ContactModel.create({
       name,
       email,
@@ -31,6 +32,36 @@ export async function POST(request: NextRequest) {
       budget: budget || '',
       status: 'new',
     });
+
+    // Send to n8n webhook if configured
+    const n8nWebhookUrl = process.env.N8N_WEBHOOK_URL;
+
+    if (n8nWebhookUrl) {
+      try {
+        const webhookResponse = await fetch(n8nWebhookUrl, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({
+            name,
+            email,
+            subject,
+            message,
+            projectType: projectType || 'Not specified',
+            budget: budget || 'Not specified',
+            submittedAt: new Date().toISOString(),
+          }),
+        });
+
+        if (!webhookResponse.ok) {
+          console.error('n8n webhook failed:', await webhookResponse.text());
+        }
+      } catch (webhookError) {
+        // Log webhook error but don't fail the request
+        console.error('Error calling n8n webhook:', webhookError);
+      }
+    }
 
     return NextResponse.json(
       { message: 'Contact form submitted successfully', id: contact._id },
