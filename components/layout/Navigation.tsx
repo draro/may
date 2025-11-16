@@ -20,6 +20,11 @@ export default function Navigation() {
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
+  // Hide navigation on admin pages
+  if (pathname?.startsWith('/admin')) {
+    return null;
+  }
+
   const navLinks = [
     { href: '/', label: 'Home' },
     { href: '/gallery', label: 'Gallery' },
