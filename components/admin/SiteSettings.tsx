@@ -132,6 +132,18 @@ export default function SiteSettings() {
           {activeSection === 'hero' && (
             <div className="space-y-4">
               <h3 className="text-lg font-semibold">Hero Section</h3>
+              <div className="flex items-center p-4 bg-gray-50 dark:bg-gray-800 rounded">
+                <input
+                  id="hero-enabled"
+                  type="checkbox"
+                  checked={config.hero.enabled}
+                  onChange={(e) => setConfig({ ...config, hero: { ...config.hero, enabled: e.target.checked } })}
+                  className="w-4 h-4 text-gray-900 border-gray-300 rounded focus:ring-gray-900"
+                />
+                <label htmlFor="hero-enabled" className="ml-2 text-sm font-medium">
+                  Show Hero Section on Homepage
+                </label>
+              </div>
               <div className="grid md:grid-cols-2 gap-4">
                 <div>
                   <label className="block text-sm font-medium mb-2">Main Title</label>

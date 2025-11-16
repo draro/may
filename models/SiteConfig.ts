@@ -11,6 +11,7 @@ export interface SiteConfig {
 
   // Hero Section
   hero: {
+    enabled: boolean;
     title: string;
     subtitle: string;
     description: string;

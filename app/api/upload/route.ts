@@ -1,14 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { uploadImage, generateUniqueFileName, isFirebaseConfigured } from '@/utils/upload';
 import { ImageModel } from '@/models/Image';
-import fs from 'fs/promises';
-import path from 'path';
-
-export const config = {
-  api: {
-    bodyParser: false,
-  },
-};
 
 export async function POST(request: NextRequest) {
   try {

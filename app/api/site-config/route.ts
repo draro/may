@@ -19,6 +19,7 @@ export async function GET() {
           keywords: ['photographer', 'NYC photographer', 'architecture photography', 'interior photography', 'travel photography', 'commercial photographer', 'New York'],
         },
         hero: {
+          enabled: true,
           title: 'Visual Stories',
           subtitle: 'Through the Lens',
           description: 'NYC-based photographer specializing in architecture, interiors, and travel photography. Capturing moments that matter.',
