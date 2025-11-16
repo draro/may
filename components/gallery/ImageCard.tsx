@@ -6,9 +6,10 @@ import { Image as ImageType } from '@/types';
 
 interface ImageCardProps {
   image: ImageType;
+  onClick?: () => void;
 }
 
-export default function ImageCard({ image }: ImageCardProps) {
+export default function ImageCard({ image, onClick }: ImageCardProps) {
   const [isHovered, setIsHovered] = useState(false);
 
   return (
@@ -21,6 +22,7 @@ export default function ImageCard({ image }: ImageCardProps) {
       style={{ aspectRatio: '4/3' }}
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}
+      onClick={onClick}
     >
       {/* Image */}
       <div className="relative w-full h-full">

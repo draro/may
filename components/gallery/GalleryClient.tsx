@@ -3,6 +3,8 @@
 import { useEffect, useState } from 'react';
 import { motion } from 'framer-motion';
 import ImageCard from './ImageCard';
+import Lightbox from './Lightbox';
+import { useLightbox } from '@/hooks/useLightbox';
 import { Image as ImageType, Category } from '@/types';
 
 export default function GalleryClient() {
@@ -43,6 +45,8 @@ export default function GalleryClient() {
       ? images
       : images.filter((img) => img.categorySlug === selectedCategory);
 
+  const lightbox = useLightbox(filteredImages);
+
   if (loading) {
     return (
       <div className="min-h-screen pt-32 px-4 sm:px-6 lg:px-8">
@@ -58,74 +62,89 @@ export default function GalleryClient() {
   }
 
   return (
-    <div className="min-h-screen pt-32 px-4 sm:px-6 lg:px-8 pb-24">
-      <div className="max-w-7xl mx-auto">
-        {/* Header */}
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.6 }}
-          className="text-center mb-16"
-        >
-          <h1 className="text-5xl font-bold mb-4" style={{ fontFamily: 'var(--font-playfair)' }}>
-            Gallery
-          </h1>
-          <p className="text-xl text-gray-600 dark:text-gray-400">
-            Explore our curated collection of photography
-          </p>
-        </motion.div>
-
-        {/* Category Filter */}
-        {categories.length > 0 && (
+    <>
+      <div className="min-h-screen pt-32 px-4 sm:px-6 lg:px-8 pb-24">
+        <div className="max-w-7xl mx-auto">
+          {/* Header */}
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6, delay: 0.2 }}
-            className="flex flex-wrap justify-center gap-4 mb-16"
+            transition={{ duration: 0.6 }}
+            className="text-center mb-16"
           >
-            <button
-              onClick={() => setSelectedCategory('all')}
-              className={`px-6 py-2 text-sm uppercase tracking-wider transition-all ${
-                selectedCategory === 'all'
-                  ? 'bg-gray-900 text-white'
-                  : 'border border-gray-300 dark:border-gray-600 text-gray-700 dark:text-gray-300 hover:border-gray-900'
-              }`}
+            <h1 className="text-5xl font-bold mb-4" style={{ fontFamily: 'var(--font-playfair)' }}>
+              Gallery
+            </h1>
+            <p className="text-xl text-gray-600 dark:text-gray-400">
+              Explore our curated collection of photography
+            </p>
+          </motion.div>
+
+          {/* Category Filter */}
+          {categories.length > 0 && (
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.6, delay: 0.2 }}
+              className="flex flex-wrap justify-center gap-4 mb-16"
             >
-              All
-            </button>
-            {categories.map((category) => (
               <button
-                key={category._id?.toString() || category.slug}
-                onClick={() => setSelectedCategory(category.slug)}
+                onClick={() => setSelectedCategory('all')}
                 className={`px-6 py-2 text-sm uppercase tracking-wider transition-all ${
-                  selectedCategory === category.slug
-                    ? 'bg-gray-900 text-white'
-                    : 'border border-gray-300 dark:border-gray-600 text-gray-700 dark:text-gray-300 hover:border-gray-900'
+                  selectedCategory === 'all'
+                    ? 'bg-gray-900 dark:bg-white text-white dark:text-gray-900'
+                    : 'border border-gray-300 dark:border-gray-600 text-gray-700 dark:text-gray-300 hover:border-gray-900 dark:hover:border-white'
                 }`}
               >
-                {category.name}
+                All
               </button>
-            ))}
-          </motion.div>
-        )}
+              {categories.map((category) => (
+                <button
+                  key={category._id?.toString() || category.slug}
+                  onClick={() => setSelectedCategory(category.slug)}
+                  className={`px-6 py-2 text-sm uppercase tracking-wider transition-all ${
+                    selectedCategory === category.slug
+                      ? 'bg-gray-900 dark:bg-white text-white dark:text-gray-900'
+                      : 'border border-gray-300 dark:border-gray-600 text-gray-700 dark:text-gray-300 hover:border-gray-900 dark:hover:border-white'
+                  }`}
+                >
+                  {category.name}
+                </button>
+              ))}
+            </motion.div>
+          )}
 
-        {/* Images Grid */}
-        {filteredImages.length === 0 ? (
-          <div className="text-center py-16">
-            <p className="text-gray-600 dark:text-gray-400">
-              {selectedCategory === 'all'
-                ? 'No images yet. Check back soon!'
-                : 'No images in this category yet.'}
-            </p>
-          </div>
-        ) : (
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-            {filteredImages.map((image) => (
-              <ImageCard key={image._id?.toString() || image.id} image={image} />
-            ))}
-          </div>
-        )}
+          {/* Images Grid */}
+          {filteredImages.length === 0 ? (
+            <div className="text-center py-16">
+              <p className="text-gray-600 dark:text-gray-400">
+                {selectedCategory === 'all'
+                  ? 'No images yet. Check back soon!'
+                  : 'No images in this category yet.'}
+              </p>
+            </div>
+          ) : (
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+              {filteredImages.map((image, index) => (
+                <ImageCard
+                  key={image._id?.toString() || image.id}
+                  image={image}
+                  onClick={() => lightbox.open(index)}
+                />
+              ))}
+            </div>
+          )}
+        </div>
       </div>
-    </div>
+
+      <Lightbox
+        images={filteredImages}
+        currentIndex={lightbox.currentIndex}
+        isOpen={lightbox.isOpen}
+        onClose={lightbox.close}
+        onNext={lightbox.next}
+        onPrevious={lightbox.previous}
+      />
+    </>
   );
 }
