@@ -69,8 +69,6 @@ export async function generateMetadata(): Promise<Metadata> {
   };
 }
 
-export const metadata = await generateMetadata();
-
 export default function RootLayout({
   children,
 }: Readonly<{
