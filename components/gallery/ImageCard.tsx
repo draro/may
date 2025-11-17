@@ -75,10 +75,21 @@ export default function ImageCard({ image, onClick }: ImageCardProps) {
                 {image.description}
               </p>
             )}
-            <div className="mt-2 flex items-center gap-2">
-              <span className="text-xs uppercase tracking-wider text-gray-500 dark:text-gray-400">
-                {image.categorySlug}
-              </span>
+            <div className="mt-2 flex items-center gap-2 flex-wrap">
+              {/* Display multiple categories or fallback to single category */}
+              {image.categorySlugs && image.categorySlugs.length > 0 ? (
+                image.categorySlugs.map((slug, index) => (
+                  <span key={index} className="text-xs uppercase tracking-wider text-gray-500 dark:text-gray-400 bg-gray-100 dark:bg-gray-700 px-2 py-1 rounded">
+                    {slug}
+                  </span>
+                ))
+              ) : (
+                image.categorySlug && (
+                  <span className="text-xs uppercase tracking-wider text-gray-500 dark:text-gray-400 bg-gray-100 dark:bg-gray-700 px-2 py-1 rounded">
+                    {image.categorySlug}
+                  </span>
+                )
+              )}
               {image.location && (
                 <>
                   <span className="text-gray-400">•</span>

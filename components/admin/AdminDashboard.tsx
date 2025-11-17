@@ -7,6 +7,7 @@ import Link from 'next/link';
 import { Category, Image as ImageType } from '@/types';
 import ImageUpload from './ImageUpload';
 import SiteSettings from './SiteSettings';
+import ImageEditModal from './ImageEditModal';
 
 export default function AdminDashboard() {
   const { data: session, status } = useSession();
@@ -16,6 +17,8 @@ export default function AdminDashboard() {
   const [activeTab, setActiveTab] = useState<'overview' | 'categories' | 'images' | 'upload' | 'settings'>('overview');
   const [newCategory, setNewCategory] = useState({ name: '', slug: '', description: '' });
   const [loading, setLoading] = useState(false);
+  const [editingImage, setEditingImage] = useState<ImageType | null>(null);
+  const [isEditModalOpen, setIsEditModalOpen] = useState(false);
 
   useEffect(() => {
     if (status === 'unauthenticated') {
@@ -105,6 +108,20 @@ export default function AdminDashboard() {
     } catch (error) {
       console.error('Error deleting image:', error);
     }
+  };
+
+  const handleEditImage = (image: ImageType) => {
+    setEditingImage(image);
+    setIsEditModalOpen(true);
+  };
+
+  const handleCloseEditModal = () => {
+    setIsEditModalOpen(false);
+    setEditingImage(null);
+  };
+
+  const handleUpdateSuccess = () => {
+    fetchData();
   };
 
   if (status === 'loading') {
@@ -336,18 +353,28 @@ export default function AdminDashboard() {
                     />
                     <div className="p-4">
                       <h3 className="font-semibold mb-1">{image.title}</h3>
-                      <p className="text-sm text-gray-600 dark:text-gray-400 mb-2">{image.categorySlug}</p>
+                      <p className="text-sm text-gray-600 dark:text-gray-400 mb-2">
+                        {image.categorySlugs?.join(', ') || image.categorySlug}
+                      </p>
                       {image.featured && (
-                        <span className="inline-block px-2 py-1 bg-gray-900 text-white text-xs">
+                        <span className="inline-block px-2 py-1 bg-gray-900 dark:bg-white text-white dark:text-gray-900 text-xs mb-2">
                           Featured
                         </span>
                       )}
-                      <button
-                        onClick={() => handleDeleteImage(image._id?.toString() || '')}
-                        className="mt-2 w-full px-4 py-2 text-sm text-red-600 hover:text-red-800 border border-red-200 hover:border-red-300"
-                      >
-                        Delete
-                      </button>
+                      <div className="flex gap-2 mt-2">
+                        <button
+                          onClick={() => handleEditImage(image)}
+                          className="flex-1 px-4 py-2 text-sm text-gray-900 dark:text-white hover:bg-gray-100 dark:hover:bg-gray-800 border border-gray-300 dark:border-gray-600"
+                        >
+                          Edit
+                        </button>
+                        <button
+                          onClick={() => handleDeleteImage(image._id?.toString() || '')}
+                          className="flex-1 px-4 py-2 text-sm text-red-600 hover:text-red-800 border border-red-200 dark:border-red-800 hover:border-red-300"
+                        >
+                          Delete
+                        </button>
+                      </div>
                     </div>
                   </div>
                 ))}
@@ -366,6 +393,17 @@ export default function AdminDashboard() {
           <SiteSettings />
         )}
       </div>
+
+      {/* Image Edit Modal */}
+      {editingImage && (
+        <ImageEditModal
+          image={editingImage}
+          categories={categories}
+          isOpen={isEditModalOpen}
+          onClose={handleCloseEditModal}
+          onUpdateSuccess={handleUpdateSuccess}
+        />
+      )}
     </div>
   );
 }

@@ -29,8 +29,8 @@ export async function POST(request: NextRequest) {
     const {
       title,
       description,
-      categoryId,
-      categorySlug,
+      categoryIds,
+      categorySlugs,
       firebaseUrl,
       thumbnailUrl,
       width,
@@ -40,9 +40,9 @@ export async function POST(request: NextRequest) {
       location
     } = body;
 
-    if (!title || !categoryId || !categorySlug || !firebaseUrl) {
+    if (!title || !categoryIds?.length || !categorySlugs?.length || !firebaseUrl) {
       return NextResponse.json(
-        { error: 'Title, categoryId, categorySlug, and firebaseUrl are required' },
+        { error: 'Title, categoryIds, categorySlugs, and firebaseUrl are required' },
         { status: 400 }
       );
     }
@@ -50,8 +50,8 @@ export async function POST(request: NextRequest) {
     const image = await ImageModel.create({
       title,
       description: description || '',
-      categoryId,
-      categorySlug,
+      categoryIds,
+      categorySlugs,
       firebaseUrl,
       thumbnailUrl,
       width: width || 1200,

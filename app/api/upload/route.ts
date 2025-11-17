@@ -6,8 +6,15 @@ export async function POST(request: NextRequest) {
   try {
     const formData = await request.formData();
     const file = formData.get('file') as File;
-    const categoryId = formData.get('categoryId') as string;
-    const categorySlug = formData.get('categorySlug') as string;
+
+    // Support both single and multiple categories
+    const categoryIdsStr = formData.get('categoryIds') as string;
+    const categorySlugsStr = formData.get('categorySlugs') as string;
+
+    // Parse category arrays from JSON strings
+    const categoryIds = categoryIdsStr ? JSON.parse(categoryIdsStr) : [];
+    const categorySlugs = categorySlugsStr ? JSON.parse(categorySlugsStr) : [];
+
     const title = formData.get('title') as string;
     const description = formData.get('description') as string || '';
     const location = formData.get('location') as string || '';
@@ -20,9 +27,9 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    if (!categoryId || !categorySlug || !title) {
+    if (!categoryIds?.length || !categorySlugs?.length || !title) {
       return NextResponse.json(
-        { error: 'Missing required fields: categoryId, categorySlug, title' },
+        { error: 'Missing required fields: categoryIds, categorySlugs, title' },
         { status: 400 }
       );
     }
@@ -53,23 +60,24 @@ export async function POST(request: NextRequest) {
     const fileName = generateUniqueFileName(file.name);
 
     // Upload image (will use Firebase or local based on config)
-    const { url, storage } = await uploadImage(buffer, fileName, categorySlug);
+    // Use first category slug for storage path
+    const { url, storage } = await uploadImage(buffer, fileName, categorySlugs[0]);
 
     // Get image dimensions (basic estimation)
     // In production, you might want to use a library like 'sharp' for this
     const width = 1200;
     const height = 800;
 
-    // Get the next order number
-    const existingImages = await ImageModel.findByCategory(categorySlug);
+    // Get the next order number based on first category
+    const existingImages = await ImageModel.findByCategory(categorySlugs[0]);
     const order = existingImages.length;
 
-    // Save image metadata to database
+    // Save image metadata to database with multiple categories
     const image = await ImageModel.create({
       title,
       description,
-      categoryId,
-      categorySlug,
+      categoryIds,
+      categorySlugs,
       firebaseUrl: url,
       width,
       height,

@@ -20,8 +20,7 @@ export default function ImageUpload({ categories, onUploadSuccess }: ImageUpload
   const [formData, setFormData] = useState({
     title: '',
     description: '',
-    categoryId: '',
-    categorySlug: '',
+    selectedCategoryIds: [] as string[],
     location: '',
     featured: false,
   });
@@ -95,16 +94,18 @@ export default function ImageUpload({ categories, onUploadSuccess }: ImageUpload
     }
   };
 
-  const handleCategoryChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
-    const categoryId = e.target.value;
-    const category = categories.find((c) => c._id?.toString() === categoryId);
-    if (category) {
-      setFormData((prev) => ({
+  const handleCategoryToggle = (categoryId: string) => {
+    setFormData((prev) => {
+      const isSelected = prev.selectedCategoryIds.includes(categoryId);
+      const newCategoryIds = isSelected
+        ? prev.selectedCategoryIds.filter((id) => id !== categoryId)
+        : [...prev.selectedCategoryIds, categoryId];
+
+      return {
         ...prev,
-        categoryId,
-        categorySlug: category.slug,
-      }));
-    }
+        selectedCategoryIds: newCategoryIds,
+      };
+    });
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -114,8 +115,8 @@ export default function ImageUpload({ categories, onUploadSuccess }: ImageUpload
       return;
     }
 
-    if (!formData.categoryId || !formData.title) {
-      setError('Please fill in all required fields');
+    if (formData.selectedCategoryIds.length === 0 || !formData.title) {
+      setError('Please fill in all required fields and select at least one category');
       return;
     }
 
@@ -124,12 +125,18 @@ export default function ImageUpload({ categories, onUploadSuccess }: ImageUpload
     setSuccess('');
 
     try {
+      // Get category slugs from selected IDs
+      const selectedCategories = categories.filter((cat) =>
+        formData.selectedCategoryIds.includes(cat._id?.toString() || '')
+      );
+      const categorySlugs = selectedCategories.map((cat) => cat.slug);
+
       const uploadFormData = new FormData();
       uploadFormData.append('file', file);
       uploadFormData.append('title', formData.title);
       uploadFormData.append('description', formData.description);
-      uploadFormData.append('categoryId', formData.categoryId);
-      uploadFormData.append('categorySlug', formData.categorySlug);
+      uploadFormData.append('categoryIds', JSON.stringify(formData.selectedCategoryIds));
+      uploadFormData.append('categorySlugs', JSON.stringify(categorySlugs));
       uploadFormData.append('location', formData.location);
       uploadFormData.append('featured', formData.featured.toString());
 
@@ -147,8 +154,7 @@ export default function ImageUpload({ categories, onUploadSuccess }: ImageUpload
         setFormData({
           title: '',
           description: '',
-          categoryId: '',
-          categorySlug: '',
+          selectedCategoryIds: [],
           location: '',
           featured: false,
         });
@@ -251,41 +257,52 @@ export default function ImageUpload({ categories, onUploadSuccess }: ImageUpload
         </div>
 
         {/* Form Fields */}
-        <div className="grid md:grid-cols-2 gap-4">
-          <div>
-            <label htmlFor="category" className="block text-sm font-medium mb-2">
-              Category *
-            </label>
-            <select
-              id="category"
-              value={formData.categoryId}
-              onChange={handleCategoryChange}
-              required
-              className="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-800 focus:border-gray-900 dark:focus:border-white focus:outline-none"
-            >
-              <option value="">Select a category</option>
-              {categories.map((category) => (
-                <option key={category._id?.toString()} value={category._id?.toString()}>
-                  {category.name}
-                </option>
-              ))}
-            </select>
-          </div>
+        <div>
+          <label htmlFor="title" className="block text-sm font-medium mb-2">
+            Title *
+          </label>
+          <input
+            id="title"
+            type="text"
+            value={formData.title}
+            onChange={(e) => setFormData({ ...formData, title: e.target.value })}
+            required
+            className="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-800 focus:border-gray-900 dark:focus:border-white focus:outline-none"
+            placeholder="e.g., Manhattan Skyline"
+          />
+        </div>
 
-          <div>
-            <label htmlFor="title" className="block text-sm font-medium mb-2">
-              Title *
-            </label>
-            <input
-              id="title"
-              type="text"
-              value={formData.title}
-              onChange={(e) => setFormData({ ...formData, title: e.target.value })}
-              required
-              className="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-800 focus:border-gray-900 dark:focus:border-white focus:outline-none"
-              placeholder="e.g., Manhattan Skyline"
-            />
+        <div>
+          <label className="block text-sm font-medium mb-2">
+            Categories * (Select one or more)
+          </label>
+          <div className="border border-gray-300 dark:border-gray-600 rounded p-4 max-h-48 overflow-y-auto bg-white dark:bg-gray-800">
+            {categories.map((category) => {
+              const categoryId = category._id?.toString() || '';
+              const isChecked = formData.selectedCategoryIds.includes(categoryId);
+
+              return (
+                <div key={categoryId} className="flex items-center mb-2 last:mb-0">
+                  <input
+                    type="checkbox"
+                    id={`upload-cat-${categoryId}`}
+                    checked={isChecked}
+                    onChange={() => handleCategoryToggle(categoryId)}
+                    className="w-4 h-4 text-gray-900 border-gray-300 rounded focus:ring-gray-900"
+                  />
+                  <label
+                    htmlFor={`upload-cat-${categoryId}`}
+                    className="ml-2 text-sm cursor-pointer"
+                  >
+                    {category.name}
+                  </label>
+                </div>
+              );
+            })}
           </div>
+          <p className="text-xs text-gray-500 dark:text-gray-400 mt-1">
+            Selected: {formData.selectedCategoryIds.length} category(ies)
+          </p>
         </div>
 
         <div>

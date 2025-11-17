@@ -15,8 +15,14 @@ export class ImageModel {
 
   static async findByCategory(categorySlug: string): Promise<Image[]> {
     const db = await getDb();
+    // Support both new multi-category and old single category format
     return db.collection<Image>(COLLECTION_NAME)
-      .find({ categorySlug })
+      .find({
+        $or: [
+          { categorySlugs: categorySlug },
+          { categorySlug } // Backward compatibility
+        ]
+      })
       .sort({ order: 1 })
       .toArray();
   }
