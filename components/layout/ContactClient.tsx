@@ -1,7 +1,19 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
+
+interface ContactInfo {
+  email: string;
+  phone: string;
+  address: string;
+  socialLinks: {
+    instagram?: string;
+    twitter?: string;
+    linkedin?: string;
+    facebook?: string;
+  };
+}
 
 export default function ContactClient() {
   const [formData, setFormData] = useState({
@@ -15,6 +27,23 @@ export default function ContactClient() {
   const [loading, setLoading] = useState(false);
   const [success, setSuccess] = useState(false);
   const [error, setError] = useState('');
+  const [contactInfo, setContactInfo] = useState<ContactInfo | null>(null);
+
+  useEffect(() => {
+    // Fetch contact info from site config
+    const fetchContactInfo = async () => {
+      try {
+        const response = await fetch('/api/site-config');
+        if (response.ok) {
+          const data = await response.json();
+          setContactInfo(data.contact);
+        }
+      } catch (err) {
+        console.error('Error fetching contact info:', err);
+      }
+    };
+    fetchContactInfo();
+  }, []);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
     setFormData({
@@ -89,28 +118,46 @@ export default function ContactClient() {
             </h2>
 
             <div className="space-y-6 mb-8">
-              <div className="flex items-start gap-4">
-                <svg className="w-6 h-6 text-gray-600 dark:text-gray-400 mt-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
-                </svg>
-                <div>
-                  <h3 className="font-semibold mb-1">Location</h3>
-                  <p className="text-gray-600 dark:text-gray-400">New York, NY</p>
+              {contactInfo?.address && (
+                <div className="flex items-start gap-4">
+                  <svg className="w-6 h-6 text-gray-600 dark:text-gray-400 mt-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
+                  </svg>
+                  <div>
+                    <h3 className="font-semibold mb-1">Location</h3>
+                    <p className="text-gray-600 dark:text-gray-400">{contactInfo.address}</p>
+                  </div>
                 </div>
-              </div>
+              )}
 
-              <div className="flex items-start gap-4">
-                <svg className="w-6 h-6 text-gray-600 dark:text-gray-400 mt-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
-                </svg>
-                <div>
-                  <h3 className="font-semibold mb-1">Email</h3>
-                  <a href="mailto:contact@photographer.com" className="text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:text-white">
-                    contact@photographer.com
-                  </a>
+              {contactInfo?.email && (
+                <div className="flex items-start gap-4">
+                  <svg className="w-6 h-6 text-gray-600 dark:text-gray-400 mt-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
+                  </svg>
+                  <div>
+                    <h3 className="font-semibold mb-1">Email</h3>
+                    <a href={`mailto:${contactInfo.email}`} className="text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white">
+                      {contactInfo.email}
+                    </a>
+                  </div>
                 </div>
-              </div>
+              )}
+
+              {contactInfo?.phone && (
+                <div className="flex items-start gap-4">
+                  <svg className="w-6 h-6 text-gray-600 dark:text-gray-400 mt-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z" />
+                  </svg>
+                  <div>
+                    <h3 className="font-semibold mb-1">Phone</h3>
+                    <a href={`tel:${contactInfo.phone}`} className="text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white">
+                      {contactInfo.phone}
+                    </a>
+                  </div>
+                </div>
+              )}
 
               <div className="flex items-start gap-4">
                 <svg className="w-6 h-6 text-gray-600 dark:text-gray-400 mt-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
