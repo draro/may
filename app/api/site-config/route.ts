@@ -93,6 +93,10 @@ export async function GET() {
           // Ensure enabled property exists
           enabled: config.hero?.enabled !== undefined ? config.hero.enabled : defaultConfig.hero.enabled,
         },
+        about: {
+          ...defaultConfig.about,
+          ...(config.about || {}),
+        },
         theme: {
           fonts: {
             ...defaultConfig.theme.fonts,
