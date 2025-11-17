@@ -27,6 +27,15 @@ export async function uploadToLocal(
   fileName: string,
   category: string
 ): Promise<string> {
+  // Check if we're running in a serverless/production environment (like Vercel)
+  const isServerless = process.cwd() === '/var/task' || process.env.VERCEL === '1';
+
+  if (isServerless) {
+    throw new Error(
+      'Local file storage is not available in production. Please configure Firebase Storage by adding Firebase environment variables (NEXT_PUBLIC_FIREBASE_API_KEY, NEXT_PUBLIC_FIREBASE_PROJECT_ID, NEXT_PUBLIC_FIREBASE_STORAGE_BUCKET) to your deployment environment.'
+    );
+  }
+
   const uploadDir = path.join(process.cwd(), 'public', 'uploads', category);
 
   // Create directory if it doesn't exist
