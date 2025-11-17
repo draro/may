@@ -127,6 +127,32 @@ export default function SiteSettings() {
                   className="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-800 focus:border-gray-900 dark:focus:border-white focus:outline-none"
                 />
               </div>
+              <div>
+                <label className="block text-sm font-medium mb-2">Favicon URL</label>
+                <input
+                  type="text"
+                  value={config.seo.favicon || ''}
+                  onChange={(e) => setConfig({ ...config, seo: { ...config.seo, favicon: e.target.value } })}
+                  placeholder="/favicon.ico or full URL to favicon"
+                  className="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-800 focus:border-gray-900 dark:focus:border-white focus:outline-none"
+                />
+                <p className="text-sm text-gray-500 dark:text-gray-400 mt-2">
+                  Upload your favicon to the Upload tab, then paste the URL here. Recommended: .ico, .png, or .svg (16x16 or 32x32 pixels)
+                </p>
+                {config.seo.favicon && (
+                  <div className="mt-3 flex items-center gap-3 p-3 bg-gray-50 dark:bg-gray-800 rounded">
+                    <img
+                      src={config.seo.favicon}
+                      alt="Favicon preview"
+                      className="w-8 h-8"
+                      onError={(e) => {
+                        (e.target as HTMLImageElement).style.display = 'none';
+                      }}
+                    />
+                    <span className="text-sm text-gray-600 dark:text-gray-400">Preview</span>
+                  </div>
+                )}
+              </div>
             </div>
           )}
 

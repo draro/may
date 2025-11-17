@@ -7,6 +7,7 @@ export interface SiteConfig {
     title: string;
     description: string;
     keywords: string[];
+    favicon?: string; // URL to uploaded favicon
   };
 
   // Hero Section

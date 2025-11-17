@@ -46,7 +46,7 @@ export async function generateMetadata(): Promise<Metadata> {
     };
   }
 
-  return {
+  const metadata: Metadata = {
     title: config.seo.title,
     description: config.seo.description,
     keywords: config.seo.keywords,
@@ -67,6 +67,17 @@ export async function generateMetadata(): Promise<Metadata> {
       follow: true,
     },
   };
+
+  // Add favicon if configured
+  if (config.seo.favicon) {
+    metadata.icons = {
+      icon: config.seo.favicon,
+      shortcut: config.seo.favicon,
+      apple: config.seo.favicon,
+    };
+  }
+
+  return metadata;
 }
 
 export default function RootLayout({
