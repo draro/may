@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { uploadImage, generateUniqueFileName, isFirebaseConfigured } from '@/utils/upload';
+import { uploadImage, generateUniqueFileName, isVercelBlobConfigured, isFirebaseConfigured } from '@/utils/upload';
 import { ImageModel } from '@/models/Image';
 
 export async function POST(request: NextRequest) {
@@ -94,12 +94,27 @@ export async function POST(request: NextRequest) {
 }
 
 export async function GET() {
-  const configured = isFirebaseConfigured();
+  const vercelBlobConfigured = isVercelBlobConfigured();
+  const firebaseConfigured = isFirebaseConfigured();
+
+  let storageType: string;
+  let message: string;
+
+  if (vercelBlobConfigured) {
+    storageType = 'vercel-blob';
+    message = 'Images will be uploaded to Vercel Blob Storage';
+  } else if (firebaseConfigured) {
+    storageType = 'firebase';
+    message = 'Images will be uploaded to Firebase Storage';
+  } else {
+    storageType = 'local';
+    message = 'Images will be uploaded to local storage (public/uploads/) - development only';
+  }
+
   return NextResponse.json({
-    firebaseConfigured: configured,
-    storageType: configured ? 'firebase' : 'local',
-    message: configured
-      ? 'Images will be uploaded to Firebase Storage'
-      : 'Images will be uploaded to local storage (public/uploads/)',
+    vercelBlobConfigured,
+    firebaseConfigured,
+    storageType,
+    message,
   });
 }

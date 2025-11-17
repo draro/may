@@ -1,7 +1,12 @@
 import { ref, uploadBytes, getDownloadURL } from 'firebase/storage';
 import { storage } from '@/lib/db/firebase';
+import { put } from '@vercel/blob';
 import fs from 'fs/promises';
 import path from 'path';
+
+export function isVercelBlobConfigured(): boolean {
+  return !!process.env.BLOB_READ_WRITE_TOKEN;
+}
 
 export function isFirebaseConfigured(): boolean {
   return !!(
@@ -9,6 +14,18 @@ export function isFirebaseConfigured(): boolean {
     process.env.NEXT_PUBLIC_FIREBASE_PROJECT_ID &&
     process.env.NEXT_PUBLIC_FIREBASE_STORAGE_BUCKET
   );
+}
+
+export async function uploadToVercelBlob(
+  file: Buffer,
+  fileName: string,
+  category: string
+): Promise<string> {
+  const blob = await put(`images/${category}/${fileName}`, file, {
+    access: 'public',
+    token: process.env.BLOB_READ_WRITE_TOKEN,
+  });
+  return blob.url;
 }
 
 export async function uploadToFirebase(
@@ -32,7 +49,7 @@ export async function uploadToLocal(
 
   if (isServerless) {
     throw new Error(
-      'Local file storage is not available in production. Please configure Firebase Storage by adding Firebase environment variables (NEXT_PUBLIC_FIREBASE_API_KEY, NEXT_PUBLIC_FIREBASE_PROJECT_ID, NEXT_PUBLIC_FIREBASE_STORAGE_BUCKET) to your deployment environment.'
+      'Local file storage is not available in production. Please configure either Vercel Blob (BLOB_READ_WRITE_TOKEN) or Firebase Storage (NEXT_PUBLIC_FIREBASE_API_KEY, NEXT_PUBLIC_FIREBASE_PROJECT_ID, NEXT_PUBLIC_FIREBASE_STORAGE_BUCKET).'
     );
   }
 
@@ -52,20 +69,30 @@ export async function uploadImage(
   file: Buffer,
   fileName: string,
   category: string
-): Promise<{ url: string; storage: 'firebase' | 'local' }> {
+): Promise<{ url: string; storage: 'vercel-blob' | 'firebase' | 'local' }> {
+  // Priority 1: Vercel Blob (best for Vercel deployments)
+  if (isVercelBlobConfigured()) {
+    try {
+      const url = await uploadToVercelBlob(file, fileName, category);
+      return { url, storage: 'vercel-blob' };
+    } catch (error) {
+      console.error('Vercel Blob upload failed, trying Firebase:', error);
+    }
+  }
+
+  // Priority 2: Firebase (works on any platform)
   if (isFirebaseConfigured()) {
     try {
       const url = await uploadToFirebase(file, fileName, category);
       return { url, storage: 'firebase' };
     } catch (error) {
-      console.error('Firebase upload failed, falling back to local:', error);
-      const url = await uploadToLocal(file, fileName, category);
-      return { url, storage: 'local' };
+      console.error('Firebase upload failed, trying local:', error);
     }
-  } else {
-    const url = await uploadToLocal(file, fileName, category);
-    return { url, storage: 'local' };
   }
+
+  // Priority 3: Local storage (development only)
+  const url = await uploadToLocal(file, fileName, category);
+  return { url, storage: 'local' };
 }
 
 export function generateUniqueFileName(originalName: string): string {
