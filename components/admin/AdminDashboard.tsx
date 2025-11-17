@@ -135,7 +135,7 @@ export default function AdminDashboard() {
                 View Website
               </Link>
               <button
-                onClick={() => signOut()}
+                onClick={() => signOut({ callbackUrl: '/admin/login', redirect: true })}
                 className="px-4 py-2 bg-gray-900 text-white text-sm hover:bg-gray-800 transition-colors"
               >
                 Sign Out
