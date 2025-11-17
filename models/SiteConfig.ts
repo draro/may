@@ -63,6 +63,7 @@ export interface SiteConfig {
     fonts: {
       headingFont: string; // Google Font name
       bodyFont: string; // Google Font name
+      logoFont: string; // Google Font name for navbar logo
     };
     lightMode: {
       primaryColor: string;

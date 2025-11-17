@@ -59,6 +59,7 @@ export async function GET() {
         fonts: {
           headingFont: 'Playfair Display',
           bodyFont: 'Inter',
+          logoFont: 'Playfair Display',
         },
         lightMode: {
           primaryColor: '#111827', // gray-900

@@ -432,7 +432,7 @@ export default function SiteSettings() {
               {/* Fonts */}
               <div className="bg-gray-50 dark:bg-gray-800 p-4 rounded">
                 <h4 className="text-md font-semibold mb-4">Fonts</h4>
-                <div className="grid md:grid-cols-2 gap-4">
+                <div className="grid md:grid-cols-2 gap-4 mb-4">
                   <FontPicker
                     value={config.theme.fonts.headingFont}
                     onChange={(font) => setConfig({ ...config, theme: { ...config.theme, fonts: { ...config.theme.fonts, headingFont: font } } })}
@@ -444,6 +444,14 @@ export default function SiteSettings() {
                     onChange={(font) => setConfig({ ...config, theme: { ...config.theme, fonts: { ...config.theme.fonts, bodyFont: font } } })}
                     label="Body Font (Google Fonts)"
                     type="body"
+                  />
+                </div>
+                <div>
+                  <FontPicker
+                    value={config.theme.fonts.logoFont}
+                    onChange={(font) => setConfig({ ...config, theme: { ...config.theme, fonts: { ...config.theme.fonts, logoFont: font } } })}
+                    label="Navbar Logo Font (Google Fonts)"
+                    type="logo"
                   />
                 </div>
               </div>
