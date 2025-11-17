@@ -36,7 +36,8 @@ export interface SiteConfig {
     title: string;
     subtitle: string;
     bio: string;
-    skills: string[];
+    skills: string[]; // Skills & Expertise
+    interests: string[]; // Areas of Interest
   };
 
   // Contact

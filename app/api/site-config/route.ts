@@ -40,6 +40,7 @@ export async function GET() {
         subtitle: 'Professional Photographer',
         bio: 'I am a professional photographer based in New York City, specializing in architecture, interior design, and travel photography. With over a decade of experience, I bring a unique perspective to every project.',
         skills: ['Architecture Photography', 'Interior Design', 'Travel Photography', 'Commercial Projects', 'Editorial Work'],
+        interests: ['Urban Exploration', 'Minimalist Design', 'Street Photography', 'Documentary Work', 'Fine Art'],
       },
       contact: {
         email: 'hello@photographer.com',

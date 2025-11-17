@@ -313,12 +313,23 @@ export default function SiteSettings() {
                 />
               </div>
               <div>
-                <label className="block text-sm font-medium mb-2">Skills (comma-separated)</label>
+                <label className="block text-sm font-medium mb-2">Skills & Expertise (comma-separated)</label>
                 <input
                   type="text"
                   value={config.about.skills.join(', ')}
-                  onChange={(e) => setConfig({ ...config, about: { ...config.about, skills: e.target.value.split(',').map(s => s.trim()) } })}
+                  onChange={(e) => setConfig({ ...config, about: { ...config.about, skills: e.target.value.split(',').map(s => s.trim()).filter(s => s) } })}
                   className="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-800 focus:border-gray-900 dark:focus:border-white focus:outline-none"
+                  placeholder="e.g., Architecture Photography, Interior Design, Travel Photography"
+                />
+              </div>
+              <div>
+                <label className="block text-sm font-medium mb-2">Areas of Interest (comma-separated)</label>
+                <input
+                  type="text"
+                  value={config.about.interests?.join(', ') || ''}
+                  onChange={(e) => setConfig({ ...config, about: { ...config.about, interests: e.target.value.split(',').map(s => s.trim()).filter(s => s) } })}
+                  className="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-800 focus:border-gray-900 dark:focus:border-white focus:outline-none"
+                  placeholder="e.g., Urban Exploration, Minimalist Design, Street Photography"
                 />
               </div>
             </div>

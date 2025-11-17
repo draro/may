@@ -2,20 +2,43 @@
 
 import { useEffect, useState } from 'react';
 import { motion } from 'framer-motion';
-import { PhotographerProfile } from '@/types';
 import Link from 'next/link';
 
+interface AboutData {
+  name?: string;
+  location?: string;
+  bio: string;
+  skills: string[];
+  interests: string[];
+  email?: string;
+  phone?: string;
+  socialLinks?: {
+    instagram?: string;
+    linkedin?: string;
+  };
+}
+
 export default function AboutClient() {
-  const [profile, setProfile] = useState<PhotographerProfile | null>(null);
+  const [profile, setProfile] = useState<AboutData | null>(null);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     async function fetchProfile() {
       try {
-        const response = await fetch('/api/profile');
+        const response = await fetch('/api/site-config');
         if (response.ok) {
           const data = await response.json();
-          setProfile(data);
+          // Map site-config to profile structure
+          setProfile({
+            name: 'MAY CHETRIT',
+            location: data.contact?.address || 'New York, NY',
+            bio: data.about?.bio || '',
+            skills: data.about?.skills || [],
+            interests: data.about?.interests || [],
+            email: data.contact?.email,
+            phone: data.contact?.phone,
+            socialLinks: data.contact?.socialLinks,
+          });
         }
       } catch (error) {
         console.error('Error fetching profile:', error);
