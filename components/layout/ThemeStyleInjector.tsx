@@ -15,7 +15,7 @@ export default function ThemeStyleInjector() {
   }, []);
 
   useEffect(() => {
-    if (!config) return;
+    if (!config || !config.theme) return;
 
     // Create or update style element for custom theme
     let styleEl = document.getElementById('custom-theme-styles') as HTMLStyleElement;

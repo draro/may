@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from 'react';
 import { SiteConfig } from '@/models/SiteConfig';
+import FontPicker from './FontPicker';
 
 export default function SiteSettings() {
   const [config, setConfig] = useState<SiteConfig | null>(null);
@@ -432,26 +433,18 @@ export default function SiteSettings() {
               <div className="bg-gray-50 dark:bg-gray-800 p-4 rounded">
                 <h4 className="text-md font-semibold mb-4">Fonts</h4>
                 <div className="grid md:grid-cols-2 gap-4">
-                  <div>
-                    <label className="block text-sm font-medium mb-2">Heading Font (Google Fonts)</label>
-                    <input
-                      type="text"
-                      value={config.theme.fonts.headingFont}
-                      onChange={(e) => setConfig({ ...config, theme: { ...config.theme, fonts: { ...config.theme.fonts, headingFont: e.target.value } } })}
-                      className="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-800 focus:border-gray-900 dark:focus:border-white focus:outline-none"
-                      placeholder="e.g., Playfair Display"
-                    />
-                  </div>
-                  <div>
-                    <label className="block text-sm font-medium mb-2">Body Font (Google Fonts)</label>
-                    <input
-                      type="text"
-                      value={config.theme.fonts.bodyFont}
-                      onChange={(e) => setConfig({ ...config, theme: { ...config.theme, fonts: { ...config.theme.fonts, bodyFont: e.target.value } } })}
-                      className="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-800 focus:border-gray-900 dark:focus:border-white focus:outline-none"
-                      placeholder="e.g., Inter"
-                    />
-                  </div>
+                  <FontPicker
+                    value={config.theme.fonts.headingFont}
+                    onChange={(font) => setConfig({ ...config, theme: { ...config.theme, fonts: { ...config.theme.fonts, headingFont: font } } })}
+                    label="Heading Font (Google Fonts)"
+                    type="heading"
+                  />
+                  <FontPicker
+                    value={config.theme.fonts.bodyFont}
+                    onChange={(font) => setConfig({ ...config, theme: { ...config.theme, fonts: { ...config.theme.fonts, bodyFont: font } } })}
+                    label="Body Font (Google Fonts)"
+                    type="body"
+                  />
                 </div>
               </div>
 
