@@ -46,7 +46,7 @@ export default function Navigation() {
             className="text-2xl font-serif font-bold tracking-tight hover:opacity-70 transition-opacity text-gray-900 dark:text-white"
             style={{ fontFamily: 'var(--font-playfair)' }}
           >
-            PHOTOGRAPHER
+            MAY CHETRIT
           </Link>
 
           {/* Desktop Navigation */}
