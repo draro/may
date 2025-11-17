@@ -2,25 +2,32 @@
 
 import { useEffect, useState } from 'react';
 import { motion } from 'framer-motion';
-import { PhotographerProfile } from '@/types';
+
+interface SkillsData {
+  skills: string[];
+  interests: string[];
+}
 
 export default function SkillsSection() {
-  const [profile, setProfile] = useState<PhotographerProfile | null>(null);
+  const [data, setData] = useState<SkillsData | null>(null);
 
   useEffect(() => {
-    async function fetchProfile() {
+    async function fetchData() {
       try {
-        const response = await fetch('/api/profile');
+        const response = await fetch('/api/site-config');
         if (response.ok) {
-          const data = await response.json();
-          setProfile(data);
+          const config = await response.json();
+          setData({
+            skills: config.about?.skills || [],
+            interests: config.about?.interests || [],
+          });
         }
       } catch (error) {
-        console.error('Error fetching profile:', error);
+        console.error('Error fetching skills data:', error);
       }
     }
 
-    fetchProfile();
+    fetchData();
   }, []);
 
   const defaultSkills = [
@@ -40,8 +47,8 @@ export default function SkillsSection() {
     'Light & Shadow'
   ];
 
-  const skills = profile?.skills || defaultSkills;
-  const interests = profile?.interests || defaultInterests;
+  const skills = data?.skills && data.skills.length > 0 ? data.skills : defaultSkills;
+  const interests = data?.interests && data.interests.length > 0 ? data.interests : defaultInterests;
 
   return (
     <section className="py-24 px-4 sm:px-6 lg:px-8 bg-gray-50 dark:bg-gray-800">
@@ -67,8 +74,8 @@ export default function SkillsSection() {
                   transition={{ duration: 0.4, delay: index * 0.1 }}
                   className="flex items-center gap-3 group"
                 >
-                  <div className="w-2 h-2 bg-gray-900 group-hover:w-8 transition-all duration-300" />
-                  <span className="text-gray-700 dark:text-gray-300 group-hover:text-gray-900 dark:text-white transition-colors">
+                  <div className="w-2 h-2 bg-gray-900 dark:bg-white group-hover:w-8 transition-all duration-300" />
+                  <span className="text-gray-700 dark:text-gray-300 group-hover:text-gray-900 dark:group-hover:text-white transition-colors">
                     {skill}
                   </span>
                 </motion.div>
@@ -94,7 +101,7 @@ export default function SkillsSection() {
                   whileInView={{ opacity: 1, scale: 1 }}
                   viewport={{ once: true }}
                   transition={{ duration: 0.3, delay: index * 0.1 }}
-                  className="px-4 py-2 border border-gray-300 dark:border-gray-600 hover:border-gray-900 hover:bg-gray-900 hover:text-white transition-all duration-300 text-sm uppercase tracking-wider cursor-default"
+                  className="px-4 py-2 border border-gray-300 dark:border-gray-600 hover:border-gray-900 dark:hover:border-white hover:bg-gray-900 dark:hover:bg-white hover:text-white dark:hover:text-gray-900 transition-all duration-300 text-sm uppercase tracking-wider cursor-default"
                 >
                   {interest}
                 </motion.span>
