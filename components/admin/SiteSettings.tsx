@@ -127,6 +127,32 @@ export default function SiteSettings() {
                   className="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-800 focus:border-gray-900 dark:focus:border-white focus:outline-none"
                 />
               </div>
+              <div>
+                <label className="block text-sm font-medium mb-2">Favicon URL</label>
+                <input
+                  type="text"
+                  value={config.seo.favicon || ''}
+                  onChange={(e) => setConfig({ ...config, seo: { ...config.seo, favicon: e.target.value } })}
+                  placeholder="/favicon.ico or full URL to favicon"
+                  className="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-800 focus:border-gray-900 dark:focus:border-white focus:outline-none"
+                />
+                <p className="text-sm text-gray-500 dark:text-gray-400 mt-2">
+                  Upload your favicon to the Upload tab, then paste the URL here. Recommended: .ico, .png, or .svg (16x16 or 32x32 pixels)
+                </p>
+                {config.seo.favicon && (
+                  <div className="mt-3 flex items-center gap-3 p-3 bg-gray-50 dark:bg-gray-800 rounded">
+                    <img
+                      src={config.seo.favicon}
+                      alt="Favicon preview"
+                      className="w-8 h-8"
+                      onError={(e) => {
+                        (e.target as HTMLImageElement).style.display = 'none';
+                      }}
+                    />
+                    <span className="text-sm text-gray-600 dark:text-gray-400">Preview</span>
+                  </div>
+                )}
+              </div>
             </div>
           )}
 
@@ -313,12 +339,23 @@ export default function SiteSettings() {
                 />
               </div>
               <div>
-                <label className="block text-sm font-medium mb-2">Skills (comma-separated)</label>
+                <label className="block text-sm font-medium mb-2">Skills & Expertise (comma-separated)</label>
                 <input
                   type="text"
                   value={config.about.skills.join(', ')}
-                  onChange={(e) => setConfig({ ...config, about: { ...config.about, skills: e.target.value.split(',').map(s => s.trim()) } })}
+                  onChange={(e) => setConfig({ ...config, about: { ...config.about, skills: e.target.value.split(',').map(s => s.trim()).filter(s => s) } })}
                   className="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-800 focus:border-gray-900 dark:focus:border-white focus:outline-none"
+                  placeholder="e.g., Architecture Photography, Interior Design, Travel Photography"
+                />
+              </div>
+              <div>
+                <label className="block text-sm font-medium mb-2">Areas of Interest (comma-separated)</label>
+                <input
+                  type="text"
+                  value={config.about.interests?.join(', ') || ''}
+                  onChange={(e) => setConfig({ ...config, about: { ...config.about, interests: e.target.value.split(',').map(s => s.trim()).filter(s => s) } })}
+                  className="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-800 focus:border-gray-900 dark:focus:border-white focus:outline-none"
+                  placeholder="e.g., Urban Exploration, Minimalist Design, Street Photography"
                 />
               </div>
             </div>
@@ -432,7 +469,7 @@ export default function SiteSettings() {
               {/* Fonts */}
               <div className="bg-gray-50 dark:bg-gray-800 p-4 rounded">
                 <h4 className="text-md font-semibold mb-4">Fonts</h4>
-                <div className="grid md:grid-cols-2 gap-4">
+                <div className="grid md:grid-cols-2 gap-4 mb-4">
                   <FontPicker
                     value={config.theme.fonts.headingFont}
                     onChange={(font) => setConfig({ ...config, theme: { ...config.theme, fonts: { ...config.theme.fonts, headingFont: font } } })}
@@ -444,6 +481,14 @@ export default function SiteSettings() {
                     onChange={(font) => setConfig({ ...config, theme: { ...config.theme, fonts: { ...config.theme.fonts, bodyFont: font } } })}
                     label="Body Font (Google Fonts)"
                     type="body"
+                  />
+                </div>
+                <div>
+                  <FontPicker
+                    value={config.theme.fonts.logoFont}
+                    onChange={(font) => setConfig({ ...config, theme: { ...config.theme, fonts: { ...config.theme.fonts, logoFont: font } } })}
+                    label="Navbar Logo Font (Google Fonts)"
+                    type="logo"
                   />
                 </div>
               </div>

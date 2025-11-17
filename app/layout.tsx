@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { Inter, Playfair_Display } from "next/font/google";
 import "./globals.css";
 import Navigation from "@/components/layout/Navigation";
+import Footer from "@/components/layout/Footer";
 import Providers from "@/components/layout/Providers";
 import clientPromise from "@/lib/db/mongodb";
 import { SiteConfig } from "@/models/SiteConfig";
@@ -46,7 +47,7 @@ export async function generateMetadata(): Promise<Metadata> {
     };
   }
 
-  return {
+  const metadata: Metadata = {
     title: config.seo.title,
     description: config.seo.description,
     keywords: config.seo.keywords,
@@ -67,6 +68,17 @@ export async function generateMetadata(): Promise<Metadata> {
       follow: true,
     },
   };
+
+  // Add favicon if configured
+  if (config.seo.favicon) {
+    metadata.icons = {
+      icon: config.seo.favicon,
+      shortcut: config.seo.favicon,
+      apple: config.seo.favicon,
+    };
+  }
+
+  return metadata;
 }
 
 export default function RootLayout({
@@ -91,11 +103,14 @@ export default function RootLayout({
         />
       </head>
       <body
-        className={`${inter.variable} ${playfair.variable} font-sans antialiased bg-white dark:bg-gray-900 text-gray-900 dark:text-gray-100 transition-colors duration-300`}
+        className={`${inter.variable} ${playfair.variable} font-sans antialiased bg-white dark:bg-gray-900 text-gray-900 dark:text-gray-100 transition-colors duration-300 flex flex-col min-h-screen`}
       >
         <Providers>
           <Navigation />
-          {children}
+          <main className="flex-1">
+            {children}
+          </main>
+          <Footer />
         </Providers>
       </body>
     </html>

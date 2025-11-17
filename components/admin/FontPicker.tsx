@@ -6,7 +6,7 @@ interface FontPickerProps {
   value: string;
   onChange: (font: string) => void;
   label: string;
-  type: 'heading' | 'body';
+  type: 'heading' | 'body' | 'logo';
 }
 
 const POPULAR_FONTS = {
@@ -33,6 +33,18 @@ const POPULAR_FONTS = {
     'Raleway',
     'Work Sans',
     'Nunito',
+  ],
+  logo: [
+    'Playfair Display',
+    'Merriweather',
+    'Lora',
+    'Cinzel',
+    'Cormorant Garamond',
+    'Bebas Neue',
+    'Bodoni Moda',
+    'Montserrat',
+    'Raleway',
+    'Great Vibes',
   ],
 };
 
@@ -87,7 +99,7 @@ export default function FontPicker({ value, onChange, label, type }: FontPickerP
         onClick={() => setIsOpen(!isOpen)}
         className="w-full px-4 py-3 border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-800 focus:border-gray-900 dark:focus:border-white focus:outline-none text-left flex justify-between items-center"
       >
-        <span style={{ fontFamily: `"${value}", ${type === 'heading' ? 'serif' : 'sans-serif'}` }}>
+        <span style={{ fontFamily: `"${value}", ${type === 'body' ? 'sans-serif' : 'serif'}` }}>
           {value || 'Select a font'}
         </span>
         <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -109,7 +121,7 @@ export default function FontPicker({ value, onChange, label, type }: FontPickerP
             {/* Popular Fonts */}
             <div className="p-2">
               <div className="text-xs text-gray-500 dark:text-gray-400 px-2 py-1 font-semibold">
-                Popular {type === 'heading' ? 'Heading' : 'Body'} Fonts
+                Popular {type === 'heading' ? 'Heading' : type === 'body' ? 'Body' : 'Logo'} Fonts
               </div>
               {fonts.map((font) => (
                 <button
@@ -120,7 +132,7 @@ export default function FontPicker({ value, onChange, label, type }: FontPickerP
                   className={`w-full text-left px-4 py-3 hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors ${
                     value === font ? 'bg-gray-100 dark:bg-gray-700' : ''
                   }`}
-                  style={{ fontFamily: `"${font}", ${type === 'heading' ? 'serif' : 'sans-serif'}` }}
+                  style={{ fontFamily: `"${font}", ${type === 'body' ? 'sans-serif' : 'serif'}` }}
                 >
                   <div className="flex justify-between items-center">
                     <span className="text-base">{font}</span>

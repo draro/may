@@ -10,6 +10,7 @@ export default function Navigation() {
   const { theme, toggleTheme, mounted } = useTheme();
   const [isScrolled, setIsScrolled] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const [logoFont, setLogoFont] = useState('Playfair Display');
 
   useEffect(() => {
     const handleScroll = () => {
@@ -18,6 +19,30 @@ export default function Navigation() {
 
     window.addEventListener('scroll', handleScroll);
     return () => window.removeEventListener('scroll', handleScroll);
+  }, []);
+
+  // Fetch site config and load logo font
+  useEffect(() => {
+    const fetchConfig = async () => {
+      try {
+        const response = await fetch('/api/site-config');
+        if (response.ok) {
+          const data = await response.json();
+          const font = data.theme?.fonts?.logoFont || 'Playfair Display';
+          setLogoFont(font);
+
+          // Load the font dynamically
+          const link = document.createElement('link');
+          link.rel = 'stylesheet';
+          link.href = `https://fonts.googleapis.com/css2?family=${font.replace(/ /g, '+')}:wght@400;600;700&display=swap`;
+          document.head.appendChild(link);
+        }
+      } catch (error) {
+        console.error('Error fetching site config:', error);
+      }
+    };
+
+    fetchConfig();
   }, []);
 
   // Hide navigation on admin pages
@@ -44,7 +69,7 @@ export default function Navigation() {
           <Link
             href="/"
             className="text-2xl font-serif font-bold tracking-tight hover:opacity-70 transition-opacity text-gray-900 dark:text-white"
-            style={{ fontFamily: 'var(--font-playfair)' }}
+            style={{ fontFamily: `"${logoFont}", serif` }}
           >
             MAY CHETRIT
           </Link>

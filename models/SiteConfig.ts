@@ -7,6 +7,7 @@ export interface SiteConfig {
     title: string;
     description: string;
     keywords: string[];
+    favicon?: string; // URL to uploaded favicon
   };
 
   // Hero Section
@@ -36,7 +37,8 @@ export interface SiteConfig {
     title: string;
     subtitle: string;
     bio: string;
-    skills: string[];
+    skills: string[]; // Skills & Expertise
+    interests: string[]; // Areas of Interest
   };
 
   // Contact
@@ -63,6 +65,7 @@ export interface SiteConfig {
     fonts: {
       headingFont: string; // Google Font name
       bodyFont: string; // Google Font name
+      logoFont: string; // Google Font name for navbar logo
     };
     lightMode: {
       primaryColor: string;
