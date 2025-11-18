@@ -99,7 +99,7 @@ export default function Lightbox({
           </button>
 
           {/* Image counter */}
-          <div className="absolute top-4 left-4 z-50 text-white text-sm">
+          <div className="absolute top-4 left-4 z-50 text-white/80 text-sm">
             {currentIndex + 1} / {images.length}
           </div>
 
@@ -151,17 +151,17 @@ export default function Lightbox({
                 </div>
 
                 {/* Image info */}
-                <div className="mt-4 text-center text-white">
-                  <h3 className="text-xl md:text-2xl font-bold mb-1">
+                <div className="mt-4 text-center">
+                  <h3 className="text-xl md:text-2xl font-bold mb-1 text-white/90">
                     {currentImage.title}
                   </h3>
                   {currentImage.description && (
-                    <p className="text-sm md:text-base text-gray-300 mb-1">
+                    <p className="text-sm md:text-base text-gray-300/80 mb-1">
                       {currentImage.description}
                     </p>
                   )}
                   {currentImage.location && (
-                    <p className="text-xs md:text-sm text-gray-400">
+                    <p className="text-xs md:text-sm text-gray-400/70">
                       {currentImage.location}
                     </p>
                   )}
@@ -285,7 +285,7 @@ export default function Lightbox({
           )}
 
           {/* Navigation hint */}
-          <div className="absolute bottom-4 left-1/2 transform -translate-x-1/2 text-white text-xs text-center">
+          <div className="absolute bottom-4 left-1/2 transform -translate-x-1/2 text-white/70 text-xs text-center">
             <p className="hidden md:block">
               Use arrow keys to navigate • ESC to close
             </p>
