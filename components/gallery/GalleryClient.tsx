@@ -45,23 +45,48 @@ export default function GalleryClient() {
 
   const filteredImages = useMemo(() => {
     console.log('🔍 Filtering with category:', selectedCategory);
+    console.log('📊 Total images to filter:', images.length);
+    console.log('📂 Available categories:', categories.map(c => c.slug));
 
     if (selectedCategory === 'all') {
       console.log('✅ Showing all images:', images.length);
       return images;
     }
 
+    // Normalize the selected category (trim and lowercase)
+    const normalizedSelected = selectedCategory.trim().toLowerCase();
+
     const filtered = images.filter((img) => {
-      const matches = img.categorySlug === selectedCategory;
-      if (!matches) {
-        console.log(`❌ Image "${img.title}" has categorySlug="${img.categorySlug}", expected="${selectedCategory}"`);
+      // Check if categorySlug exists
+      if (!img.categorySlug) {
+        console.warn(`⚠️  Image "${img.title}" has no categorySlug! categoryId: ${img.categoryId}`);
+        return false;
       }
+
+      // Normalize the image's categorySlug (trim and lowercase)
+      const normalizedImageSlug = img.categorySlug.trim().toLowerCase();
+
+      const matches = normalizedImageSlug === normalizedSelected;
+
+      if (!matches) {
+        console.log(`❌ Image "${img.title}": categorySlug="${img.categorySlug}" (normalized: "${normalizedImageSlug}") != "${selectedCategory}" (normalized: "${normalizedSelected}")`);
+      } else {
+        console.log(`✅ Image "${img.title}": MATCH!`);
+      }
+
       return matches;
     });
 
     console.log(`✅ Filtered to ${filtered.length} images for category "${selectedCategory}"`);
+
+    if (filtered.length === 0 && images.length > 0) {
+      console.error('❗ No images matched! Check if categorySlug values in images match category slug values.');
+      console.log('Image categorySlugs:', [...new Set(images.map(i => i.categorySlug))]);
+      console.log('Category slugs:', categories.map(c => c.slug));
+    }
+
     return filtered;
-  }, [images, selectedCategory]);
+  }, [images, selectedCategory, categories]);
 
   const lightbox = useLightbox(filteredImages);
 
