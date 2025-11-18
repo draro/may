@@ -17,6 +17,10 @@ export async function GET() {
         description: 'Award-winning NYC-based photographer specializing in architectural photography, interior design, and travel documentation. Available for commercial and editorial projects.',
         keywords: ['photographer', 'NYC photographer', 'architecture photography', 'interior photography', 'travel photography', 'commercial photographer', 'New York'],
       },
+      analytics: {
+        googleAnalyticsId: '',
+        googleTagManagerId: '',
+      },
       hero: {
         enabled: true,
         title: 'Visual Stories',

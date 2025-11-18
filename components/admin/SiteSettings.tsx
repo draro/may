@@ -9,7 +9,7 @@ export default function SiteSettings() {
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
   const [message, setMessage] = useState({ type: '', text: '' });
-  const [activeSection, setActiveSection] = useState<'seo' | 'hero' | 'stats' | 'about' | 'contact' | 'footer' | 'theme'>('seo');
+  const [activeSection, setActiveSection] = useState<'seo' | 'analytics' | 'hero' | 'stats' | 'about' | 'contact' | 'footer' | 'theme'>('seo');
 
   useEffect(() => {
     fetchConfig();
@@ -65,6 +65,7 @@ export default function SiteSettings() {
 
   const sections = [
     { id: 'seo', label: 'SEO' },
+    { id: 'analytics', label: 'Analytics' },
     { id: 'hero', label: 'Hero Section' },
     { id: 'stats', label: 'Statistics' },
     { id: 'about', label: 'About' },
@@ -152,6 +153,74 @@ export default function SiteSettings() {
                     <span className="text-sm text-gray-600 dark:text-gray-400">Preview</span>
                   </div>
                 )}
+              </div>
+            </div>
+          )}
+
+          {/* Analytics Section */}
+          {activeSection === 'analytics' && (
+            <div className="space-y-4">
+              <h3 className="text-lg font-semibold">Analytics & Tracking</h3>
+              <p className="text-sm text-gray-600 dark:text-gray-400">
+                Add Google Analytics and Google Tag Manager to track visitor behavior and conversions.
+              </p>
+
+              <div className="bg-gray-50 dark:bg-gray-800 p-4 rounded">
+                <h4 className="text-md font-semibold mb-4">Google Analytics 4 (GA4)</h4>
+                <div>
+                  <label className="block text-sm font-medium mb-2">
+                    Measurement ID
+                    <span className="text-gray-500 font-normal ml-2">(e.g., G-XXXXXXXXXX)</span>
+                  </label>
+                  <input
+                    type="text"
+                    value={config.analytics?.googleAnalyticsId || ''}
+                    onChange={(e) => setConfig({
+                      ...config,
+                      analytics: {
+                        ...config.analytics,
+                        googleAnalyticsId: e.target.value
+                      }
+                    })}
+                    placeholder="G-XXXXXXXXXX"
+                    className="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-800 focus:border-gray-900 dark:focus:border-white focus:outline-none"
+                  />
+                  <p className="text-sm text-gray-500 dark:text-gray-400 mt-2">
+                    Find this in Google Analytics: Admin → Data Streams → Select your stream → Measurement ID
+                  </p>
+                </div>
+              </div>
+
+              <div className="bg-gray-50 dark:bg-gray-800 p-4 rounded">
+                <h4 className="text-md font-semibold mb-4">Google Tag Manager (GTM)</h4>
+                <div>
+                  <label className="block text-sm font-medium mb-2">
+                    Container ID
+                    <span className="text-gray-500 font-normal ml-2">(e.g., GTM-XXXXXXX)</span>
+                  </label>
+                  <input
+                    type="text"
+                    value={config.analytics?.googleTagManagerId || ''}
+                    onChange={(e) => setConfig({
+                      ...config,
+                      analytics: {
+                        ...config.analytics,
+                        googleTagManagerId: e.target.value
+                      }
+                    })}
+                    placeholder="GTM-XXXXXXX"
+                    className="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-800 focus:border-gray-900 dark:focus:border-white focus:outline-none"
+                  />
+                  <p className="text-sm text-gray-500 dark:text-gray-400 mt-2">
+                    Find this in Google Tag Manager: Admin → Container ID (top right)
+                  </p>
+                </div>
+              </div>
+
+              <div className="bg-blue-50 dark:bg-blue-900/20 border border-blue-200 dark:border-blue-800 p-4 rounded">
+                <p className="text-sm text-blue-800 dark:text-blue-300">
+                  <strong>Note:</strong> If you use Google Tag Manager, you can manage Google Analytics through GTM and don't need to fill in both fields. GTM is recommended for advanced tracking setups.
+                </p>
               </div>
             </div>
           )}
