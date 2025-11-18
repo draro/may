@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useMemo } from 'react';
 import { motion } from 'framer-motion';
 import ImageCard from './ImageCard';
 import Lightbox from './Lightbox';
@@ -23,11 +23,14 @@ export default function GalleryClient() {
 
         if (imagesRes.ok) {
           const imagesData = await imagesRes.json();
+          console.log('📸 Loaded images:', imagesData.length, 'images');
+          console.log('Sample image:', imagesData[0]);
           setImages(imagesData);
         }
 
         if (categoriesRes.ok) {
           const categoriesData = await categoriesRes.json();
+          console.log('📂 Loaded categories:', categoriesData);
           setCategories(categoriesData);
         }
       } catch (error) {
@@ -40,10 +43,25 @@ export default function GalleryClient() {
     fetchData();
   }, []);
 
-  const filteredImages =
-    selectedCategory === 'all'
-      ? images
-      : images.filter((img) => img.categorySlug === selectedCategory);
+  const filteredImages = useMemo(() => {
+    console.log('🔍 Filtering with category:', selectedCategory);
+
+    if (selectedCategory === 'all') {
+      console.log('✅ Showing all images:', images.length);
+      return images;
+    }
+
+    const filtered = images.filter((img) => {
+      const matches = img.categorySlug === selectedCategory;
+      if (!matches) {
+        console.log(`❌ Image "${img.title}" has categorySlug="${img.categorySlug}", expected="${selectedCategory}"`);
+      }
+      return matches;
+    });
+
+    console.log(`✅ Filtered to ${filtered.length} images for category "${selectedCategory}"`);
+    return filtered;
+  }, [images, selectedCategory]);
 
   const lightbox = useLightbox(filteredImages);
 
