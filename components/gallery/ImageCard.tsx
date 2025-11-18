@@ -66,34 +66,23 @@ export default function ImageCard({ image, onClick }: ImageCardProps) {
             isHovered && !isTouchDevice ? 'opacity-100' : 'opacity-0'
           }`}
         >
-          <div className="bg-white/95 dark:bg-gray-800/95 backdrop-blur-sm p-4 transform transition-transform duration-500">
-            <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-1">
+          <div className="bg-white/80 dark:bg-gray-800/80 backdrop-blur-md p-4 transform transition-transform duration-500">
+            <h3 className="text-lg font-semibold text-gray-900/90 dark:text-white/90 mb-1">
               {image.title}
             </h3>
             {image.description && (
-              <p className="text-sm text-gray-600 dark:text-gray-400 line-clamp-2">
+              <p className="text-sm text-gray-600/80 dark:text-gray-400/80 line-clamp-2">
                 {image.description}
               </p>
             )}
-            <div className="mt-2 flex items-center gap-2 flex-wrap">
-              {/* Display multiple categories or fallback to single category */}
-              {image.categorySlugs && image.categorySlugs.length > 0 ? (
-                image.categorySlugs.map((slug, index) => (
-                  <span key={index} className="text-xs uppercase tracking-wider text-gray-500 dark:text-gray-400 bg-gray-100 dark:bg-gray-700 px-2 py-1 rounded">
-                    {slug}
-                  </span>
-                ))
-              ) : (
-                image.categorySlug && (
-                  <span className="text-xs uppercase tracking-wider text-gray-500 dark:text-gray-400 bg-gray-100 dark:bg-gray-700 px-2 py-1 rounded">
-                    {image.categorySlug}
-                  </span>
-                )
-              )}
+            <div className="mt-2 flex items-center gap-2">
+              <span className="text-xs uppercase tracking-wider text-gray-500/70 dark:text-gray-400/70">
+                {image.categorySlug}
+              </span>
               {image.location && (
                 <>
-                  <span className="text-gray-400">•</span>
-                  <span className="text-xs text-gray-500 dark:text-gray-400">{image.location}</span>
+                  <span className="text-gray-400/70">•</span>
+                  <span className="text-xs text-gray-500/70 dark:text-gray-400/70">{image.location}</span>
                 </>
               )}
             </div>
