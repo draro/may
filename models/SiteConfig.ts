@@ -10,6 +10,12 @@ export interface SiteConfig {
     favicon?: string; // URL to uploaded favicon
   };
 
+  // Analytics
+  analytics: {
+    googleAnalyticsId?: string; // GA4 Measurement ID (G-XXXXXXXXXX)
+    googleTagManagerId?: string; // GTM Container ID (GTM-XXXXXXX)
+  };
+
   // Hero Section
   hero: {
     enabled: boolean;
