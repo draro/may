@@ -3,21 +3,25 @@
 import Link from 'next/link';
 import { useEffect, useState } from 'react';
 
-interface SocialLinks {
-  instagram?: string;
-  facebook?: string;
-  twitter?: string;
-  linkedin?: string;
-}
-
-interface ContactInfo {
-  email?: string;
-  phone?: string;
+interface SiteConfigData {
+  contact?: {
+    email?: string;
+    phone?: string;
+    socialLinks?: {
+      instagram?: string;
+      facebook?: string;
+      twitter?: string;
+      linkedin?: string;
+    };
+  };
+  footer?: {
+    copyrightText?: string;
+    tagline?: string;
+  };
 }
 
 export default function Footer() {
-  const [socialLinks, setSocialLinks] = useState<SocialLinks>({});
-  const [contactInfo, setContactInfo] = useState<ContactInfo>({});
+  const [config, setConfig] = useState<SiteConfigData>({});
   const currentYear = new Date().getFullYear();
 
   useEffect(() => {
@@ -26,12 +30,7 @@ export default function Footer() {
         const response = await fetch('/api/site-config');
         if (response.ok) {
           const data = await response.json();
-          if (data.socialLinks) {
-            setSocialLinks(data.socialLinks);
-          }
-          if (data.contact) {
-            setContactInfo(data.contact);
-          }
+          setConfig(data);
         }
       } catch (error) {
         console.error('Error fetching site config for footer:', error);
@@ -40,6 +39,11 @@ export default function Footer() {
 
     fetchSiteConfig();
   }, []);
+
+  const socialLinks = config.contact?.socialLinks || {};
+  const contactInfo = config.contact || {};
+  const footerText = config.footer?.copyrightText || `© ${currentYear} All rights reserved`;
+  const tagline = config.footer?.tagline;
 
   return (
     <footer className="border-t border-gray-200 dark:border-gray-800 bg-white dark:bg-gray-900 py-12 px-4 sm:px-6 lg:px-8">
@@ -149,10 +153,15 @@ export default function Footer() {
           </div>
         )}
 
-        {/* Copyright */}
-        <div className="text-center">
+        {/* Footer Text */}
+        <div className="text-center space-y-2">
+          {tagline && (
+            <p className="text-sm text-gray-600 dark:text-gray-400">
+              {tagline}
+            </p>
+          )}
           <p className="text-xs text-gray-400 dark:text-gray-500">
-            © {currentYear} All rights reserved
+            {footerText}
           </p>
         </div>
       </div>
