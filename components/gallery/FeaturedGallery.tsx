@@ -75,14 +75,13 @@ export default function FeaturedGallery() {
             </p>
           </div>
 
-          <div className="flex flex-col items-center gap-8">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
             {images.map((image, index) => (
-              <div key={image._id?.toString() || image.id} className="w-full max-w-md">
-                <ImageCard
-                  image={image}
-                  onClick={() => lightbox.open(index)}
-                />
-              </div>
+              <ImageCard
+                key={image._id?.toString() || image.id}
+                image={image}
+                onClick={() => lightbox.open(index)}
+              />
             ))}
           </div>
 

@@ -38,7 +38,7 @@ export default function ImageCard({ image, onClick }: ImageCardProps) {
       viewport={{ once: true }}
       transition={{ duration: 0.5 }}
       className="group relative overflow-hidden cursor-pointer bg-gray-100 dark:bg-gray-800"
-      style={{ aspectRatio: '4/3' }}
+      style={{ aspectRatio: '3/4' }}
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}
       onClick={onClick}
