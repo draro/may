@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { Inter, Playfair_Display } from "next/font/google";
 import "./globals.css";
 import Navigation from "@/components/layout/Navigation";
+import Footer from "@/components/layout/Footer";
 import Providers from "@/components/layout/Providers";
 import clientPromise from "@/lib/db/mongodb";
 import { SiteConfig } from "@/models/SiteConfig";
@@ -161,6 +162,7 @@ export default async function RootLayout({
         <Providers>
           <Navigation />
           {children}
+          <Footer />
         </Providers>
       </body>
     </html>
