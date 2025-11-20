@@ -10,12 +10,14 @@ const inter = Inter({
   variable: "--font-inter",
   subsets: ["latin"],
   display: "swap",
+  fallback: ["system-ui", "arial"],
 });
 
 const playfair = Playfair_Display({
   variable: "--font-playfair",
   subsets: ["latin"],
   display: "swap",
+  fallback: ["Georgia", "serif"],
 });
 
 async function getSiteConfig(): Promise<SiteConfig | null> {
