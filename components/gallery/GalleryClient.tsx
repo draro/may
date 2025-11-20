@@ -170,7 +170,7 @@ export default function GalleryClient() {
             </motion.div>
           )}
 
-          {/* Images Grid */}
+          {/* Images Vertical Layout */}
           {filteredImages.length === 0 ? (
             <div className="text-center py-16">
               <p className="text-gray-600 dark:text-gray-400">
@@ -180,7 +180,7 @@ export default function GalleryClient() {
               </p>
             </div>
           ) : (
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+            <div className="max-w-4xl mx-auto flex flex-col gap-8">
               {filteredImages.map((image, index) => (
                 <ImageCard
                   key={image._id?.toString() || image.id}

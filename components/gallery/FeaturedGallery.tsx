@@ -75,7 +75,7 @@ export default function FeaturedGallery() {
             </p>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+          <div className="max-w-4xl mx-auto flex flex-col gap-8">
             {images.map((image, index) => (
               <ImageCard
                 key={image._id?.toString() || image.id}
