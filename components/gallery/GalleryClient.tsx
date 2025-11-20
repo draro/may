@@ -180,13 +180,14 @@ export default function GalleryClient() {
               </p>
             </div>
           ) : (
-            <div className="max-w-4xl mx-auto flex flex-col gap-8">
+            <div className="flex flex-col items-center gap-8">
               {filteredImages.map((image, index) => (
-                <ImageCard
-                  key={image._id?.toString() || image.id}
-                  image={image}
-                  onClick={() => lightbox.open(index)}
-                />
+                <div key={image._id?.toString() || image.id} className="w-full max-w-md">
+                  <ImageCard
+                    image={image}
+                    onClick={() => lightbox.open(index)}
+                  />
+                </div>
               ))}
             </div>
           )}
