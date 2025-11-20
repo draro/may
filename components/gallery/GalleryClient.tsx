@@ -57,31 +57,44 @@ export default function GalleryClient() {
     const normalizedSelected = selectedCategory.trim().toLowerCase();
 
     const filtered = images.filter((img) => {
-      // Check if categorySlug exists
-      if (!img.categorySlug) {
-        console.warn(`⚠️  Image "${img.title}" has no categorySlug! categoryId: ${img.categoryId}`);
-        return false;
+      // Support both singular and plural category fields
+      // Check plural first (categorySlugs array)
+      if (img.categorySlugs && Array.isArray(img.categorySlugs)) {
+        const slugs = img.categorySlugs.map(s => s.trim().toLowerCase());
+        const matches = slugs.includes(normalizedSelected);
+
+        if (matches) {
+          console.log(`✅ Image "${img.title}": categorySlugs contains "${selectedCategory}"`);
+        }
+
+        return matches;
       }
 
-      // Normalize the image's categorySlug (trim and lowercase)
-      const normalizedImageSlug = img.categorySlug.trim().toLowerCase();
+      // Fallback to singular categorySlug
+      if (img.categorySlug) {
+        const normalizedImageSlug = img.categorySlug.trim().toLowerCase();
+        const matches = normalizedImageSlug === normalizedSelected;
 
-      const matches = normalizedImageSlug === normalizedSelected;
+        if (matches) {
+          console.log(`✅ Image "${img.title}": categorySlug matches "${selectedCategory}"`);
+        }
 
-      if (!matches) {
-        console.log(`❌ Image "${img.title}": categorySlug="${img.categorySlug}" (normalized: "${normalizedImageSlug}") != "${selectedCategory}" (normalized: "${normalizedSelected}")`);
-      } else {
-        console.log(`✅ Image "${img.title}": MATCH!`);
+        return matches;
       }
 
-      return matches;
+      console.warn(`⚠️  Image "${img.title}" has no category fields!`);
+      return false;
     });
 
     console.log(`✅ Filtered to ${filtered.length} images for category "${selectedCategory}"`);
 
     if (filtered.length === 0 && images.length > 0) {
-      console.error('❗ No images matched! Check if categorySlug values in images match category slug values.');
-      console.log('Image categorySlugs:', [...new Set(images.map(i => i.categorySlug))]);
+      console.error('❗ No images matched!');
+      console.log('Image category data:', images.map(i => ({
+        title: i.title,
+        categorySlug: i.categorySlug,
+        categorySlugs: i.categorySlugs
+      })));
       console.log('Category slugs:', categories.map(c => c.slug));
     }
 

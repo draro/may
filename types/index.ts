@@ -16,11 +16,11 @@ export interface Image {
   id?: string;
   title: string;
   description?: string;
-  categoryIds: string[]; // Support multiple categories
-  categorySlugs: string[]; // Support multiple categories
-  // Backward compatibility fields (deprecated)
+  // Support both single and multiple categories
   categoryId?: string;
   categorySlug?: string;
+  categoryIds?: string[];
+  categorySlugs?: string[];
   firebaseUrl: string; // Firestore Storage URL
   thumbnailUrl?: string;
   width: number;

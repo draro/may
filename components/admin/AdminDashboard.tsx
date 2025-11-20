@@ -18,7 +18,6 @@ export default function AdminDashboard() {
   const [newCategory, setNewCategory] = useState({ name: '', slug: '', description: '' });
   const [loading, setLoading] = useState(false);
   const [editingImage, setEditingImage] = useState<ImageType | null>(null);
-  const [isEditModalOpen, setIsEditModalOpen] = useState(false);
 
   useEffect(() => {
     if (status === 'unauthenticated') {
@@ -354,23 +353,25 @@ export default function AdminDashboard() {
                     <div className="p-4">
                       <h3 className="font-semibold mb-1">{image.title}</h3>
                       <p className="text-sm text-gray-600 dark:text-gray-400 mb-2">
-                        {image.categorySlugs?.join(', ') || image.categorySlug}
+                        {image.categorySlugs && image.categorySlugs.length > 0
+                          ? image.categorySlugs.join(', ')
+                          : image.categorySlug || 'No category'}
                       </p>
                       {image.featured && (
-                        <span className="inline-block px-2 py-1 bg-gray-900 dark:bg-white text-white dark:text-gray-900 text-xs mb-2">
+                        <span className="inline-block px-2 py-1 bg-gray-900 text-white text-xs mb-2">
                           Featured
                         </span>
                       )}
                       <div className="flex gap-2 mt-2">
                         <button
-                          onClick={() => handleEditImage(image)}
-                          className="flex-1 px-4 py-2 text-sm text-gray-900 dark:text-white hover:bg-gray-100 dark:hover:bg-gray-800 border border-gray-300 dark:border-gray-600"
+                          onClick={() => setEditingImage(image)}
+                          className="flex-1 px-4 py-2 text-sm text-gray-700 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white border border-gray-300 dark:border-gray-600 hover:border-gray-400 dark:hover:border-gray-500"
                         >
                           Edit
                         </button>
                         <button
                           onClick={() => handleDeleteImage(image._id?.toString() || '')}
-                          className="flex-1 px-4 py-2 text-sm text-red-600 hover:text-red-800 border border-red-200 dark:border-red-800 hover:border-red-300"
+                          className="flex-1 px-4 py-2 text-sm text-red-600 hover:text-red-800 border border-red-200 hover:border-red-300"
                         >
                           Delete
                         </button>
@@ -399,9 +400,8 @@ export default function AdminDashboard() {
         <ImageEditModal
           image={editingImage}
           categories={categories}
-          isOpen={isEditModalOpen}
-          onClose={handleCloseEditModal}
-          onUpdateSuccess={handleUpdateSuccess}
+          onClose={() => setEditingImage(null)}
+          onSave={fetchData}
         />
       )}
     </div>
